@@ -5,7 +5,7 @@ pub mod writer;
 
 use std::{env, path::Path};
 
-use codegen::imports_to_includes;
+use codegen::imports::imports_to_includes;
 use parsing::imports::parse_imports;
 use swc_common::{
     errors::{ColorConfig, Handler},
