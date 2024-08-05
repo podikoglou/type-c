@@ -6,7 +6,7 @@ pub mod writer;
 use std::{env, path::Path};
 
 use codegen::imports::imports_to_includes;
-use parsing::imports::parse_imports;
+use parsing::{functions::parse_functions, imports::parse_imports};
 use swc_common::{
     errors::{ColorConfig, Handler},
     sync::Lrc,
@@ -48,12 +48,15 @@ fn main() -> anyhow::Result<()> {
 
     let mut writer = CodeWriter::default();
 
-    // Step 1. Parse TS imports into IR
+    // Step 1.1 Parse TS imports into IR ones
     let imports = parse_imports(&module)?;
 
-    // Step 2. Convert IR imports to C includes
+    // Step 1.2 Convert IR imports to C includes
     let includes = imports_to_includes(&imports)?;
     writer.concat(&includes);
+
+    // Step 2.1 Parse TS functions into IR methods
+    let methods = parse_functions(&module)?;
 
     // output out C code
     println!("{}", writer.code());
