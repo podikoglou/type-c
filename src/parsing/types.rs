@@ -24,7 +24,7 @@ pub fn parse_type(type_ann: &TsType) -> anyhow::Result<Type> {
             let inner = inner.elem_type.clone();
             let parsed_type = parse_type(&inner)?;
 
-            Ok(Type::Array(Rc::new(parsed_type)))
+            Ok(Type::Pointer(Rc::new(parsed_type)))
         }
 
         _ => {

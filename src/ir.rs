@@ -26,7 +26,6 @@ pub enum Type {
     Boolean,
     Void,
     Pointer(Rc<Type>),
-    Array(Rc<Type>),
 }
 
 // #[derive(Debug)]
