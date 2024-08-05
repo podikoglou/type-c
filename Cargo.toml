@@ -1,0 +1,11 @@
+[package]
+name = "type-c-rs"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.86"
+swc_common = { version = "0.37.0", features = ["tty-emitter"] }
+swc_ecma_ast = "0.118.0"
+swc_ecma_parser = { version = "0.149.0", features = ["typescript"] }
+swc_ecma_visit = "0.104.0"
