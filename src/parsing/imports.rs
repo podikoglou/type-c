@@ -14,7 +14,7 @@ pub fn parse_imports(ast: &Module) -> anyhow::Result<Vec<Import>> {
             let module_decl = item.as_module_decl().unwrap();
             let import = module_decl.as_import().unwrap();
 
-            // the package/module were importing from
+            // the package/module we're importing from
             let module = import.src.value.to_string();
 
             // convert the named imported items into strings
