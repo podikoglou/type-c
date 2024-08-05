@@ -18,7 +18,7 @@ pub fn parse_functions(ast: &Module) -> anyhow::Result<Vec<Method>> {
             let function = &function_decl.function;
 
             // get name of the function
-            let name = function_decl.ident.to_string();
+            let name = function_decl.ident.sym.to_string();
 
             // parse params
             let params: Vec<MethodParameter> = function
