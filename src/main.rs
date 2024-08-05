@@ -5,7 +5,7 @@ pub mod writer;
 
 use std::{env, path::Path};
 
-use codegen::imports::imports_to_includes;
+use codegen::{imports::imports_to_includes, methods::method_to_c};
 use parsing::{functions::parse_functions, imports::parse_imports};
 use swc_common::{
     errors::{ColorConfig, Handler},
@@ -57,6 +57,15 @@ fn main() -> anyhow::Result<()> {
 
     // Step 2.1 Parse TS functions into IR methods
     let methods = parse_functions(&module)?;
+
+    // Step 2.2 Convert IR methods to C methods
+    methods
+        .iter()
+        .map(method_to_c)
+        .map(Result::unwrap)
+        .for_each(|w| {
+            writer.concat(&w);
+        });
 
     // output out C code
     println!("{}", writer.code());
