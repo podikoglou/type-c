@@ -1,6 +1,6 @@
 use std::rc::Rc;
 
-use anyhow::{anyhow, Result};
+use anyhow::{bail, Result};
 use swc_ecma_ast::{TsKeywordTypeKind, TsType};
 
 use crate::ir::Type;
@@ -14,9 +14,7 @@ pub fn parse_type(type_ann: &TsType) -> Result<Type> {
             TsKeywordTypeKind::TsStringKeyword => Ok(Type::Pointer(Rc::new(Type::Char))),
             TsKeywordTypeKind::TsVoidKeyword => Ok(Type::Void),
 
-            _ => {
-                return Err(anyhow!("non-supported type"));
-            }
+            other => bail!("non-supported type: {:?}", other),
         },
 
         TsType::TsArrayType(inner) => {
@@ -27,8 +25,6 @@ pub fn parse_type(type_ann: &TsType) -> Result<Type> {
             Ok(Type::Pointer(Rc::new(parsed_type)))
         }
 
-        _ => {
-            return Err(anyhow!("non-supported type"));
-        }
+        other => bail!("non-supported type: {:?}", other),
     }
 }
