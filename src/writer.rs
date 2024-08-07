@@ -1,32 +1,55 @@
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub struct CodeWriter {
     lines: Vec<String>,
 }
 
 impl CodeWriter {
     pub fn new() -> Self {
-        CodeWriter::default()
+        Self::default()
     }
 
-    pub fn write(&mut self, line: String) {
-        if line.contains('\n') {
-            line.split('\n').for_each(|l| self.write(l.to_string()));
+    pub fn write(&mut self, content: &str) {
+        if let Some(last) = self.lines.last_mut() {
+            last.push_str(content);
         } else {
-            self.lines.push(line);
+            self.lines.push(content.to_string());
         }
     }
 
-    pub fn concat(&mut self, other: &CodeWriter) {
-        self.write(other.code());
+    pub fn write_line(&mut self, line: &str) {
+        self.lines.push(line.to_string());
     }
 
-    pub fn code(&self) -> String {
-        self.lines.join("\n")
+    pub fn concat(&mut self, other: &CodeWriter) {
+        self.lines.extend(other.lines.clone());
     }
 }
 
 pub fn concat(writers: &[CodeWriter]) -> CodeWriter {
-    let mut result = CodeWriter::default();
-    writers.iter().for_each(|w| result.concat(w));
-    result
+    writers.iter().fold(CodeWriter::new(), |mut acc, w| {
+        acc.concat(w);
+        acc
+    })
+}
+
+impl From<&str> for CodeWriter {
+    fn from(value: &str) -> Self {
+        let mut writer = Self::new();
+        writer.write_line(value);
+        writer
+    }
+}
+
+impl From<String> for CodeWriter {
+    fn from(value: String) -> Self {
+        let mut writer = Self::new();
+        writer.write_line(&value);
+        writer
+    }
+}
+
+impl From<CodeWriter> for String {
+    fn from(value: CodeWriter) -> Self {
+        value.lines.join("\n")
+    }
 }

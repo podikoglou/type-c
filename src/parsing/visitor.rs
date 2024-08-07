@@ -1,8 +1,6 @@
-use crate::ir::{Method, MethodParameter, Program, Type};
-use anyhow::bail;
-use swc_ecma_visit::VisitAll;
-
 use super::type_parser::parse_type;
+use crate::ir::{Method, MethodParameter, Program, Type};
+use swc_ecma_visit::VisitAll;
 
 #[derive(Default)]
 pub struct Visitor {
