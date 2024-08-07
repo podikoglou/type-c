@@ -11,14 +11,9 @@ use super::types::type_to_c;
 pub fn method_to_c(method: &Method) -> Result<CodeWriter> {
     let mut writer = CodeWriter::default();
 
-    let return_type = type_to_c(&method.return_type)?;
+    let return_type = type_to_c(&method.return_type);
 
-    let params: Vec<String> = method
-        .parameters
-        .iter()
-        .map(parameter_to_c)
-        .map(Result::unwrap)
-        .collect();
+    let params: Vec<String> = method.parameters.iter().map(parameter_to_c).collect();
 
     writer.write(format!(
         "{} {}({})",
@@ -37,6 +32,6 @@ pub fn method_to_c(method: &Method) -> Result<CodeWriter> {
 }
 
 /// Converts a [[MethodParameter]] into a C method parameter.
-pub fn parameter_to_c(param: &MethodParameter) -> Result<String> {
-    Ok(format!("{} {}", type_to_c(&param._type)?, param.name))
+pub fn parameter_to_c(param: &MethodParameter) -> String {
+    format!("{} {}", type_to_c(&param._type), param.name)
 }
