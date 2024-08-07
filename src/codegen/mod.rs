@@ -6,6 +6,6 @@ pub mod type_codegen;
 use crate::writer::CodeWriter;
 use anyhow::Result;
 
-trait ToC {
+pub trait ToC {
     fn to_c(&self) -> Result<CodeWriter>;
 }
