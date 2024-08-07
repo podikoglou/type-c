@@ -1,3 +1,5 @@
+use anyhow::Result;
+
 use crate::{
     ir::{Method, MethodParameter},
     writer::CodeWriter,
@@ -6,7 +8,7 @@ use crate::{
 use super::types::type_to_c;
 
 /// Converts a [[Method]] into a C method.
-pub fn method_to_c(method: &Method) -> anyhow::Result<CodeWriter> {
+pub fn method_to_c(method: &Method) -> Result<CodeWriter> {
     let mut writer = CodeWriter::default();
 
     let return_type = type_to_c(&method.return_type)?;
@@ -35,6 +37,6 @@ pub fn method_to_c(method: &Method) -> anyhow::Result<CodeWriter> {
 }
 
 /// Converts a [[MethodParameter]] into a C method parameter.
-pub fn parameter_to_c(param: &MethodParameter) -> anyhow::Result<String> {
+pub fn parameter_to_c(param: &MethodParameter) -> Result<String> {
     Ok(format!("{} {}", type_to_c(&param._type)?, param.name))
 }

@@ -1,12 +1,12 @@
 use std::rc::Rc;
 
-use anyhow::anyhow;
+use anyhow::{anyhow, Result};
 use swc_ecma_ast::{TsKeywordTypeKind, TsType};
 
 use crate::ir::Type;
 
 /// Parses a [[TsType] into an IR [[Type]].
-pub fn parse_type(type_ann: &TsType) -> anyhow::Result<Type> {
+pub fn parse_type(type_ann: &TsType) -> Result<Type> {
     match type_ann {
         TsType::TsKeywordType(inner) => match &inner.kind {
             TsKeywordTypeKind::TsNumberKeyword => Ok(Type::Number),

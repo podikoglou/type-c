@@ -1,3 +1,4 @@
+use anyhow::Result;
 use swc_ecma_ast::{Module, ModuleDecl, ModuleItem, Param};
 
 use crate::ir::{Method, MethodParameter, Type};
@@ -6,7 +7,7 @@ use super::types::parse_type;
 
 /// Walks a [[Module]] and tries to find all the exported functions, then converts
 /// them to IR [[Method]]s so that they can eventually be converted to C methods.
-pub fn parse_functions(ast: &Module) -> anyhow::Result<Vec<Method>> {
+pub fn parse_functions(ast: &Module) -> Result<Vec<Method>> {
     Ok(ast
         .body
         .iter()
@@ -42,7 +43,7 @@ pub fn parse_functions(ast: &Module) -> anyhow::Result<Vec<Method>> {
 }
 
 /// Convert an AST [[Param]] into an IR [[MetohdParameter]]
-pub fn parse_param(param: &Param) -> anyhow::Result<MethodParameter> {
+pub fn parse_param(param: &Param) -> Result<MethodParameter> {
     let ident = param.pat.as_ident().unwrap();
 
     // get name of the function

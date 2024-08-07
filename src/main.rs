@@ -5,6 +5,7 @@ pub mod writer;
 
 use std::{env, path::Path};
 
+use anyhow::Result;
 use codegen::{imports::imports_to_includes, methods::method_to_c};
 use parsing::{functions::parse_functions, imports::parse_imports};
 use swc_common::{
@@ -15,7 +16,7 @@ use swc_common::{
 use swc_ecma_parser::{lexer::Lexer, Capturing, Parser, StringInput, Syntax};
 use writer::CodeWriter;
 
-fn main() -> anyhow::Result<()> {
+fn main() -> Result<()> {
     // try to read cli args
     let args = env::args().collect::<Vec<String>>();
     let file_path = args.last().unwrap();

@@ -1,3 +1,4 @@
+use anyhow::Result;
 use swc_ecma_ast::{Module, ModuleDecl, ModuleItem};
 
 use crate::ir::Import;
@@ -5,7 +6,7 @@ use crate::ir::Import;
 /// Walks a [[Module]] and tries to find all the imports, and converts them
 /// to our custom [[Import]] type so that they can be eventually
 /// converted to C `#include` statements.
-pub fn parse_imports(ast: &Module) -> anyhow::Result<Vec<Import>> {
+pub fn parse_imports(ast: &Module) -> Result<Vec<Import>> {
     Ok(ast
         .body
         .iter()
