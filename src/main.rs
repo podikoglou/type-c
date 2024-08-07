@@ -3,10 +3,10 @@ pub mod ir;
 pub mod parsing;
 pub mod writer;
 
-use std::{env, path::Path};
-
 use anyhow::Result;
+use codegen::ToC;
 use parsing::visitor::Visitor;
+use std::{env, path::Path};
 use swc_common::{
     errors::{ColorConfig, Handler},
     sync::Lrc,
@@ -14,6 +14,7 @@ use swc_common::{
 };
 use swc_ecma_parser::{lexer::Lexer, Capturing, Parser, StringInput, Syntax};
 use swc_ecma_visit::VisitAll;
+use writer::CodeWriter;
 
 fn main() -> Result<()> {
     // try to read cli args
@@ -46,44 +47,42 @@ fn main() -> Result<()> {
         .map_err(|e| e.into_diagnostic(&handler).emit())
         .expect("couldn't parse code");
 
+    // initialize the two main components of the transpiler:
+    //
+    // * the visitor: takes care of crawling the AST and
+    //   generating the IR representation of the program on the fly
+    //
+    // * the writer: the buffer where the C code is written into
+    //   by the `ToC` implementations of the IR objects.
     let mut visitor = Visitor::default();
+    let mut writer = CodeWriter::default();
+
+    // Step 1. Visit / walk the entire AST using SWC
     visitor.visit_module(&module);
 
+    // this our IR AST (which is basically a dumbed down and more universal
+    // version of swc's AST)
     let program = visitor.program;
 
-    dbg!(program);
+    // Step 2. Convert the imports to C includes
+    program.imports.iter().for_each(|import| {
+        let w = (*import).to_c().unwrap();
 
-    // TODO: convert to C
+        writer.concat(&w);
+    });
 
-    // let mut writer = CodeWriter::default();
+    writer.write_line("");
 
-    // // Step 1.1 Parse TS imports into IR ones
-    // let imports = parse_imports(&module)?;
+    // Step 3. Convert the methods to C methods
+    program.methods.iter().for_each(|method| {
+        let w = (*method).to_c().unwrap();
 
-    // // Step 1.2 Convert IR imports to C includes
-    // let includes = imports_to_includes(&imports)?;
-    // writer.concat(&includes);
-
-    // // Step 1.3 Add other includes
-    // //
-    // // In the future, we can make it only add those if needed, but for now,
-    // // I don't think we care that much about optimization.
-    // writer.write("#include <stdbool.h>".to_string());
-
-    // // Step 2.1 Parse TS functions into IR methods
-    // let methods = parse_functions(&module)?;
-
-    // // Step 2.2 Convert IR methods to C methods
-    // methods
-    //     .iter()
-    //     .map(method_to_c)
-    //     .map(Result::unwrap)
-    //     .for_each(|w| {
-    //         writer.concat(&w);
-    //     });
+        writer.concat(&w);
+        writer.write_line("");
+    });
 
     // // output out C code
-    // println!("{}", writer.code());
+    println!("{}", Into::<String>::into(writer));
 
     Ok(())
 }
