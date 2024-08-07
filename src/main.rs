@@ -56,6 +56,12 @@ fn main() -> Result<()> {
     let includes = imports_to_includes(&imports)?;
     writer.concat(&includes);
 
+    // Step 1.3 Add other includes
+    //
+    // In the future, we can make it only add those if needed, but for now,
+    // I don't think we care that much about optimization.
+    writer.write("#include <stdbool.h>".to_string());
+
     // Step 2.1 Parse TS functions into IR methods
     let methods = parse_functions(&module)?;
 
