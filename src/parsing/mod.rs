@@ -1,3 +1,2 @@
-pub mod functions;
-pub mod imports;
-pub mod types;
+pub mod type_parser;
+pub mod visitor;

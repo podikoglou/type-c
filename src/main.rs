@@ -6,15 +6,14 @@ pub mod writer;
 use std::{env, path::Path};
 
 use anyhow::Result;
-use codegen::{imports::imports_to_includes, methods::method_to_c};
-use parsing::{functions::parse_functions, imports::parse_imports};
+use parsing::visitor::Visitor;
 use swc_common::{
     errors::{ColorConfig, Handler},
     sync::Lrc,
     SourceMap,
 };
 use swc_ecma_parser::{lexer::Lexer, Capturing, Parser, StringInput, Syntax};
-use writer::CodeWriter;
+use swc_ecma_visit::VisitAll;
 
 fn main() -> Result<()> {
     // try to read cli args
@@ -47,35 +46,44 @@ fn main() -> Result<()> {
         .map_err(|e| e.into_diagnostic(&handler).emit())
         .expect("couldn't parse code");
 
-    let mut writer = CodeWriter::default();
+    let mut visitor = Visitor::default();
+    visitor.visit_module(&module);
 
-    // Step 1.1 Parse TS imports into IR ones
-    let imports = parse_imports(&module)?;
+    let program = visitor.program;
 
-    // Step 1.2 Convert IR imports to C includes
-    let includes = imports_to_includes(&imports)?;
-    writer.concat(&includes);
+    dbg!(program);
 
-    // Step 1.3 Add other includes
-    //
-    // In the future, we can make it only add those if needed, but for now,
-    // I don't think we care that much about optimization.
-    writer.write("#include <stdbool.h>".to_string());
+    // TODO: convert to C
 
-    // Step 2.1 Parse TS functions into IR methods
-    let methods = parse_functions(&module)?;
+    // let mut writer = CodeWriter::default();
 
-    // Step 2.2 Convert IR methods to C methods
-    methods
-        .iter()
-        .map(method_to_c)
-        .map(Result::unwrap)
-        .for_each(|w| {
-            writer.concat(&w);
-        });
+    // // Step 1.1 Parse TS imports into IR ones
+    // let imports = parse_imports(&module)?;
 
-    // output out C code
-    println!("{}", writer.code());
+    // // Step 1.2 Convert IR imports to C includes
+    // let includes = imports_to_includes(&imports)?;
+    // writer.concat(&includes);
+
+    // // Step 1.3 Add other includes
+    // //
+    // // In the future, we can make it only add those if needed, but for now,
+    // // I don't think we care that much about optimization.
+    // writer.write("#include <stdbool.h>".to_string());
+
+    // // Step 2.1 Parse TS functions into IR methods
+    // let methods = parse_functions(&module)?;
+
+    // // Step 2.2 Convert IR methods to C methods
+    // methods
+    //     .iter()
+    //     .map(method_to_c)
+    //     .map(Result::unwrap)
+    //     .for_each(|w| {
+    //         writer.concat(&w);
+    //     });
+
+    // // output out C code
+    // println!("{}", writer.code());
 
     Ok(())
 }
