@@ -7,8 +7,8 @@ use swc_ecma_ast::{TsArrayType, TsKeywordTypeKind, TsType, TsTypeRef};
 pub fn parse_type(type_ann: &TsType) -> Result<Type> {
     match type_ann {
         TsType::TsKeywordType(inner) => parse_primitive_type(&inner.kind),
-        TsType::TsArrayType(inner) => parse_array_type(&inner),
-        TsType::TsTypeRef(inner) => parse_type_ref(&inner),
+        TsType::TsArrayType(inner) => parse_array_type(inner),
+        TsType::TsTypeRef(inner) => parse_type_ref(inner),
 
         other => bail!("non-supported type: {:?}", other),
     }
@@ -37,7 +37,7 @@ fn parse_type_ref(input: &TsTypeRef) -> Result<Type> {
     let type_name = &input.type_name.as_ident().unwrap().sym.to_string();
 
     match type_name.as_str() {
-        "Pointer" => parse_pointer(&input),
+        "Pointer" => parse_pointer(input),
 
         other => bail!("non-supported type: {:?}", other),
     }
@@ -59,7 +59,7 @@ fn parse_pointer(input: &TsTypeRef) -> Result<Type> {
     }
 
     let inner = type_params.params.first().unwrap();
-    let inner_type = parse_type(&inner)?;
+    let inner_type = parse_type(inner)?;
 
     Ok(Type::Pointer(Rc::new(inner_type)))
 }

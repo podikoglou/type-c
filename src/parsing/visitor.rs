@@ -25,14 +25,14 @@ impl Visitor {
                 .clone()
                 .expect("expected function name"),
 
-            parameters: self.current_function_params.clone().unwrap_or(vec![]),
+            parameters: self.current_function_params.clone().unwrap_or_default(),
 
             return_type: self
                 .current_function_return_type
                 .clone()
                 .unwrap_or(Type::Void),
 
-            body: self.current_function_body.clone().unwrap_or(vec![]),
+            body: self.current_function_body.clone().unwrap_or_default(),
         })
     }
 }

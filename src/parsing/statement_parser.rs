@@ -18,7 +18,7 @@ pub fn parse_statement(statement: &Stmt) -> Result<Statement> {
         Stmt::Return(stmt) => match &stmt.arg {
             // parse expression & return it
             Some(expr) => {
-                let parsed = parse_expr(&expr)?;
+                let parsed = parse_expr(expr)?;
 
                 Ok(Statement::ReturnStatement(parsed))
             }
