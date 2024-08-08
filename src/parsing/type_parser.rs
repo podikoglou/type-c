@@ -1,7 +1,8 @@
-use crate::ir::Type;
 use anyhow::{bail, Result};
 use std::rc::Rc;
 use swc_ecma_ast::{TsArrayType, TsKeywordTypeKind, TsType, TsTypeRef};
+
+use crate::ir::types::Type;
 
 /// Parses a [[TsType] into an IR [[Type]].
 pub fn parse_type(type_ann: &TsType) -> Result<Type> {

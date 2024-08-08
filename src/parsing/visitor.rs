@@ -1,5 +1,11 @@
+use crate::ir::{
+    method::{Method, MethodParameter},
+    statement::Statement,
+    types::Type,
+    Program,
+};
+
 use super::type_parser::parse_type;
-use crate::ir::{Method, MethodParameter, Program, Type};
 use swc_ecma_visit::VisitAll;
 
 #[derive(Default)]
@@ -9,6 +15,7 @@ pub struct Visitor {
     pub current_function_name: Option<String>,
     pub current_function_params: Option<Vec<MethodParameter>>,
     pub current_function_return_type: Option<Type>,
+    pub current_function_body: Option<Vec<Statement>>,
 }
 
 impl Visitor {
@@ -25,6 +32,8 @@ impl Visitor {
                 .current_function_return_type
                 .clone()
                 .unwrap_or(Type::Void),
+
+            body: self.current_function_body.clone().unwrap_or(vec![]),
         })
     }
 }
