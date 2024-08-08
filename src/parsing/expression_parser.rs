@@ -1,11 +1,15 @@
-use crate::ir::expression::{Expression, Literal, MethodCall};
+use std::rc::Rc;
+
+use crate::ir::expression::{Expression, Literal, MemberAccess, MethodCall};
 use anyhow::{bail, Result};
-use swc_ecma_ast::{CallExpr, Expr, Lit};
+use swc_ecma_ast::{CallExpr, Expr, Ident, Lit, MemberExpr, MemberProp};
 
 pub fn parse_expr(expr: &Expr) -> Result<Expression> {
     match expr {
         Expr::Call(expr) => parse_call_expr(expr),
         Expr::Lit(expr) => parse_literal(expr),
+        Expr::Member(expr) => parse_member_expr(expr),
+        Expr::Ident(expr) => parse_ident_expr(expr),
 
         other => bail!("non-supported expression kind: {:?}", other),
     }
@@ -44,4 +48,31 @@ fn parse_literal(expr: &Lit) -> Result<Expression> {
 
         other => bail!("non-supported literal: {:?}", other),
     }))
+}
+
+fn parse_member_expr(expr: &MemberExpr) -> Result<Expression> {
+    // get the object of which we're accessing the member
+    if !expr.obj.is_ident() {
+        bail!("can't index such complex expression yet")
+    }
+
+    let obj = *expr.obj.clone();
+    let obj = obj.ident().unwrap().sym.to_string();
+
+    match &expr.prop {
+        MemberProp::Computed(prop) => {
+            let parsed_expr = parse_expr(&prop.expr)?;
+
+            Ok(Expression::MemberAccess(MemberAccess {
+                object: Rc::new(Expression::Variable(obj)),
+                index: Rc::new(parsed_expr),
+            }))
+        }
+
+        other => bail!("non-supported prop type: {:?}", other),
+    }
+}
+
+fn parse_ident_expr(expr: &Ident) -> Result<Expression> {
+    Ok(Expression::Variable(expr.sym.to_string()))
 }
