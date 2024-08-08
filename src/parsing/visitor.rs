@@ -5,7 +5,7 @@ use crate::ir::{
     Program,
 };
 
-use super::type_parser::parse_type;
+use super::{statement_parser::parse_statement, type_parser::parse_type};
 use swc_ecma_visit::VisitAll;
 
 #[derive(Default)]
@@ -117,5 +117,13 @@ impl VisitAll for Visitor {
         }
 
         <swc_ecma_ast::Param as swc_ecma_visit::VisitAllWith<Self>>::visit_children_with(node, self)
+    }
+
+    fn visit_stmt(&mut self, node: &swc_ecma_ast::Stmt) {
+        let statement = parse_statement(node).unwrap();
+
+        dbg!(statement);
+
+        <swc_ecma_ast::Stmt as swc_ecma_visit::VisitAllWith<Self>>::visit_children_with(node, self)
     }
 }
