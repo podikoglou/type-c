@@ -122,7 +122,10 @@ impl VisitAll for Visitor {
     fn visit_stmt(&mut self, node: &swc_ecma_ast::Stmt) {
         let statement = parse_statement(node).unwrap();
 
-        dbg!(statement);
+        match &mut self.current_function_body {
+            Some(body) => body.push(statement),
+            None => self.current_function_body = Some(vec![statement]),
+        }
 
         <swc_ecma_ast::Stmt as swc_ecma_visit::VisitAllWith<Self>>::visit_children_with(node, self)
     }
