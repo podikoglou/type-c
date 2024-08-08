@@ -33,7 +33,9 @@ impl ToC for Method {
         // body
         writer.write_line("{");
 
-        // TODO: Statements!
+        for statement in &self.body {
+            writer.concat(&statement.to_c()?);
+        }
 
         writer.write_line("}");
 
