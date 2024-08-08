@@ -8,7 +8,9 @@ impl ToC for Literal {
 
         match self {
             Literal::String(val) => {
+                // always sanitize your input.
                 let val = val.replace("\"", "\\\"");
+                let val = val.replace("\n", "\\n");
 
                 writer.write(format!("\"{}\"", val).as_str())
             }
