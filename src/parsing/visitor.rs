@@ -1,11 +1,10 @@
+use super::{statement_parser::parse_statement, type_parser::parse_type};
 use crate::ir::{
     method::{Method, MethodParameter},
     statement::Statement,
     types::Type,
     Program,
 };
-
-use super::{statement_parser::parse_statement, type_parser::parse_type};
 use swc_ecma_visit::VisitAll;
 
 #[derive(Default)]

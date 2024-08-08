@@ -1,6 +1,5 @@
-use crate::{ir::types::Type, writer::CodeWriter};
-
 use super::ToC;
+use crate::{ir::types::Type, writer::CodeWriter};
 use anyhow::Result;
 
 impl ToC for Type {

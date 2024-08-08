@@ -1,9 +1,8 @@
-use anyhow::{bail, Result};
-
 use crate::{
     ir::{expression::Expression, statement::Statement},
     writer::CodeWriter,
 };
+use anyhow::{bail, Result};
 
 use super::ToC;
 
