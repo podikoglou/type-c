@@ -1,4 +1,4 @@
-use super::AstToIR;
+use super::ToIR;
 use crate::ir::{
     method::{Method, MethodParameter},
     statement::Statement,
