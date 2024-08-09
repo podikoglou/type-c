@@ -1,6 +1,6 @@
 use crate::{def_codegen, ir::expression::Literal};
 
-def_codegen!(Literal, |literal: &Literal| {
+def_codegen!(Literal, |literal| {
     let mut writer = CodeWriter::default();
 
     match literal {

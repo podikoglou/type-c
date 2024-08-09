@@ -3,7 +3,7 @@ use anyhow::bail;
 use std::rc::Rc;
 use swc_ecma_ast::TsKeywordTypeKind;
 
-def_parser!(TsKeywordTypeKind, Type, |t: &TsKeywordTypeKind| {
+def_parser!(TsKeywordTypeKind, Type, |t| {
     match t {
         TsKeywordTypeKind::TsNumberKeyword => Ok(Type::Number),
         TsKeywordTypeKind::TsBooleanKeyword => Ok(Type::Boolean),

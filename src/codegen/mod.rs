@@ -15,12 +15,12 @@ pub trait ToC {
 
 #[macro_export]
 macro_rules! def_codegen {
-    ($ir_type:ty, $to_ir_fn:expr) => {
+    ($ir_type:ty, |$param:ident| $body:expr) => {
         use crate::codegen::{CodeWriter, ToC};
 
         impl ToC for $ir_type {
             fn to_c(&self) -> anyhow::Result<CodeWriter> {
-                ($to_ir_fn)(self)
+                (|$param: &$ir_type| $body)(self)
             }
         }
     };

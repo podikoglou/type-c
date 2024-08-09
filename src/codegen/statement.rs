@@ -4,7 +4,7 @@ use crate::{
 };
 use anyhow::bail;
 
-def_codegen!(Statement, |statement: &Statement| {
+def_codegen!(Statement, |statement| {
     let mut writer = CodeWriter::default();
 
     match statement {

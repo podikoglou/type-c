@@ -1,6 +1,6 @@
 use crate::{def_codegen, ir::method::MethodParameter};
 
-def_codegen!(MethodParameter, |param: &MethodParameter| {
+def_codegen!(MethodParameter, |param| {
     let mut writer = CodeWriter::default();
 
     writer.concat(&param._type.to_c().unwrap());

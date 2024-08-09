@@ -1,6 +1,6 @@
 use crate::{def_codegen, ir::types::Type};
 
-def_codegen!(Type, |t: &Type| {
+def_codegen!(Type, |t| {
     Ok(CodeWriter::from(match t {
         Type::Char => "char".to_string(),
 

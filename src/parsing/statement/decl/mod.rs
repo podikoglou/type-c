@@ -4,7 +4,7 @@ use crate::{def_parser, ir::statement::Statement};
 use anyhow::bail;
 use swc_ecma_ast::Decl;
 
-def_parser!(Decl, Statement, |decl: &Decl| {
+def_parser!(Decl, Statement, |decl| {
     match decl {
         Decl::Var(decl) => decl.to_ir(),
 

@@ -6,7 +6,7 @@ use anyhow::bail;
 use std::rc::Rc;
 use swc_ecma_ast::{MemberExpr, MemberProp};
 
-def_parser!(MemberExpr, Expression, |expr: &MemberExpr| {
+def_parser!(MemberExpr, Expression, |expr| {
     // get the object of which we're accessing the member
     if !expr.obj.is_ident() {
         bail!("can't index such complex expression yet")

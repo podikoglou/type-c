@@ -3,7 +3,7 @@ use anyhow::{bail, Result};
 use std::rc::Rc;
 use swc_ecma_ast::TsTypeRef;
 
-def_parser!(TsTypeRef, Type, |t: &TsTypeRef| {
+def_parser!(TsTypeRef, Type, |t| {
     let type_name = &t.type_name.as_ident().unwrap().sym.to_string();
 
     match type_name.as_str() {

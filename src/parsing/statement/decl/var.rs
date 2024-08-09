@@ -5,7 +5,7 @@ use crate::{
 use anyhow::bail;
 use swc_ecma_ast::VarDecl;
 
-def_parser!(VarDecl, Statement, |decl: &VarDecl| {
+def_parser!(VarDecl, Statement, |decl| {
     // a Decl can have multiple decls stored in a Vec. I assume this is
     // becuase of stuff like multiple assignments in a single statement?
     //

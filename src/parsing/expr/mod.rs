@@ -7,7 +7,7 @@ use crate::{def_parser, ir::expression::Expression};
 use anyhow::bail;
 use swc_ecma_ast::Expr;
 
-def_parser!(Expr, Expression, |expr: &Expr| {
+def_parser!(Expr, Expression, |expr| {
     match expr {
         Expr::Call(expr) => expr.to_ir(),
         Expr::Lit(expr) => expr.to_ir(),

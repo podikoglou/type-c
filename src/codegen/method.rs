@@ -1,7 +1,7 @@
 use crate::{def_codegen, ir::method::Method};
 use anyhow::Result;
 
-def_codegen!(Method, |method: &Method| {
+def_codegen!(Method, |method| {
     let mut writer = CodeWriter::default();
 
     let return_type = &method.return_type.to_c()?;

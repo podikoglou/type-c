@@ -7,7 +7,7 @@ use crate::{
 };
 use swc_ecma_ast::ReturnStmt;
 
-def_parser!(ReturnStmt, Statement, |statement: &ReturnStmt| {
+def_parser!(ReturnStmt, Statement, |statement| {
     match &statement.arg {
         // parse expression & return it
         Some(expr) => {

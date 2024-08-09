@@ -1,7 +1,7 @@
 use crate::{def_codegen, ir::expression::Expression};
 use anyhow::bail;
 
-def_codegen!(Expression, |expr: &Expression| {
+def_codegen!(Expression, |expr| {
     let mut writer = CodeWriter::default();
 
     match &expr {

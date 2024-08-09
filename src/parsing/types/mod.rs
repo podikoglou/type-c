@@ -6,7 +6,7 @@ use crate::{def_parser, ir::types::Type};
 use anyhow::bail;
 use swc_ecma_ast::TsType;
 
-def_parser!(TsType, Type, |t: &TsType| {
+def_parser!(TsType, Type, |t| {
     match t {
         TsType::TsKeywordType(inner) => inner.kind.to_ir(),
         TsType::TsArrayType(inner) => inner.to_ir(),

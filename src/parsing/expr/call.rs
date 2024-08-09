@@ -5,7 +5,7 @@ use crate::{
 use anyhow::{bail, Result};
 use swc_ecma_ast::{CallExpr, Expr};
 
-def_parser!(CallExpr, Expression, |expr: &CallExpr| {
+def_parser!(CallExpr, Expression, |expr| {
     let callee = *expr.callee.as_expr().unwrap().clone();
 
     // NOTE: This does *not* support member functions (i.e. calling functions
