@@ -5,11 +5,10 @@ pub enum Statement {
     VariableDeclaration(VariableDeclaration),
     Assignment(Assignment),
 
-    // IfStatement(IfStatement),
+    // If(IfStatement),
     // WhileLoop(WhileLoop),
-    ReturnStatement(Expression),
-
-    ExpressionStatement(Expression),
+    Return(ReturnStatement),
+    Expression(ExpressionStatement),
 }
 
 #[derive(Debug, Clone)]
@@ -24,3 +23,9 @@ pub struct Assignment {
     pub target: Expression,
     pub value: Expression,
 }
+
+#[derive(Debug, Clone)]
+pub struct ReturnStatement(pub Expression);
+
+#[derive(Debug, Clone)]
+pub struct ExpressionStatement(pub Expression);

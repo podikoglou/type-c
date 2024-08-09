@@ -2,7 +2,7 @@ use crate::{
     def_parser,
     ir::{
         expression::{Expression, Literal},
-        statement::Statement,
+        statement::{ReturnStatement, Statement},
     },
 };
 use swc_ecma_ast::ReturnStmt;
@@ -13,12 +13,14 @@ def_parser!(ReturnStmt, Statement, |statement| {
         Some(expr) => {
             let parsed = expr.to_ir()?;
 
-            Ok(Statement::ReturnStatement(parsed))
+            Ok(Statement::Return(ReturnStatement(parsed)))
         }
 
         // return void
-        None => Ok(Statement::ReturnStatement(Expression::Literal(
+
+        // I tried... It won't shrink.
+        None => Ok(Statement::Return(ReturnStatement(Expression::Literal(
             Literal::Void,
-        ))),
+        )))),
     }
 });
