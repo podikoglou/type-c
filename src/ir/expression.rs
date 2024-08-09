@@ -11,14 +11,6 @@ pub enum Expression {
 }
 
 #[derive(Debug, Clone)]
-pub enum Literal {
-    String(String),
-    Number(f64),
-    Boolean(bool),
-    Void,
-}
-
-#[derive(Debug, Clone)]
 pub struct MethodCall {
     pub name: String,
     pub arguments: Vec<Expression>,
@@ -32,4 +24,13 @@ pub struct MemberAccess {
     // it can also be something like foo['bar'] in a JSON object
     // (which btw are not supported (yet))
     pub index: Rc<Expression>,
+}
+
+#[derive(Debug, Clone)]
+pub enum Literal {
+    String(String),
+    Number(f64),
+    Boolean(bool),
+    Array(Vec<Expression>),
+    Void,
 }

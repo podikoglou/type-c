@@ -1,5 +1,7 @@
 use crate::{def_codegen, ir::expression::Literal};
 
+use super::ToC;
+
 def_codegen!(Literal, |literal| {
     let mut buffer = CodeBuffer::default();
 
@@ -20,6 +22,19 @@ def_codegen!(Literal, |literal| {
         },
 
         Literal::Void => {}
+
+        Literal::Array(val) => {
+            buffer.write("{");
+            buffer.write(
+                val.iter()
+                    .map(ToC::to_c)
+                    .map(Result::unwrap)
+                    .map(Into::into)
+                    .collect::<Vec<String>>()
+                    .join(", "),
+            );
+            buffer.write("}");
+        }
     }
 
     Ok(buffer)
