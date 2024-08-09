@@ -57,3 +57,9 @@ impl From<CodeBuffer> for String {
         value.lines.join("\n")
     }
 }
+
+impl ToString for CodeBuffer {
+    fn to_string(&self) -> String {
+        self.lines.join("\n")
+    }
+}
