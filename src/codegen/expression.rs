@@ -24,6 +24,18 @@ def_codegen!(Expression, |expr| {
 
             buffer.write(")");
         }
+
+        Self::MemberAccess(access) => {
+            // keep in mind that this is not the kind of member access where
+            // you can access fields of a struct or object, this is
+            // just used for indexing arrays
+
+            buffer.write(access.object.to_c()?);
+            buffer.write("[");
+            buffer.write(access.index.to_c()?);
+            buffer.write("]");
+        }
+
         other => bail!("non-supported expression kind: {:?}", other),
     }
 

@@ -5,6 +5,10 @@ pub enum Expression {
     Literal(Literal),
     Variable(String),
     MethodCall(MethodCall),
+
+    // NOTE:
+    // 1) Keep in mind that structs are not supported at this moment
+    // 2) This is translated to as foo[bar] in C -- **not** foo.bar
     MemberAccess(MemberAccess),
     // BinaryOperation(Box<BinaryOperation>),
     // UnaryOperation(Box<UnaryOperation>),
