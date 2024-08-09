@@ -107,7 +107,7 @@ impl VisitAll for Visitor {
         let name = &ident.id.sym.to_string();
 
         // get type of the parameter
-        let ts_type = ident.type_ann.clone().unwrap().type_ann;
+        let ts_type = ident.type_ann.clone().expect("type expected").type_ann;
 
         let parsed_type: Type = ts_type.to_ir().unwrap();
 
