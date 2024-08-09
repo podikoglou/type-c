@@ -1,10 +1,10 @@
-pub mod expression_codegen;
-pub mod import_codegen;
-pub mod literal_codegen;
-pub mod method_codegen;
-pub mod parameter_codegen;
-pub mod statement_codegen;
-pub mod type_codegen;
+pub mod expression;
+pub mod import;
+pub mod literal;
+pub mod method;
+pub mod parameter;
+pub mod statement;
+pub mod types;
 
 use crate::writer::CodeWriter;
 use anyhow::Result;
