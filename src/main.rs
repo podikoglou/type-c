@@ -1,10 +1,9 @@
-pub mod buffer;
 pub mod codegen;
 pub mod ir;
 pub mod parsing;
 
 use anyhow::Result;
-use buffer::CodeBuffer;
+use codegen::buffer::CodeBuffer;
 use codegen::ToC;
 use parsing::visitor::Visitor;
 use std::{env, path::Path};
