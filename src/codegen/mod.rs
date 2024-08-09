@@ -6,20 +6,20 @@ pub mod parameter;
 pub mod statement;
 pub mod types;
 
-use crate::writer::CodeWriter;
+use crate::buffer::CodeBuffer;
 use anyhow::Result;
 
 pub trait ToC {
-    fn to_c(&self) -> Result<CodeWriter>;
+    fn to_c(&self) -> Result<CodeBuffer>;
 }
 
 #[macro_export]
 macro_rules! def_codegen {
     ($ir_type:ty, |$param:ident| $body:expr) => {
-        use crate::codegen::{CodeWriter, ToC};
+        use crate::CodeBuffer;
 
-        impl ToC for $ir_type {
-            fn to_c(&self) -> anyhow::Result<CodeWriter> {
+        impl crate::codegen::ToC for $ir_type {
+            fn to_c(&self) -> anyhow::Result<CodeBuffer> {
                 (|$param: &$ir_type| $body)(self)
             }
         }

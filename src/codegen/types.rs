@@ -1,7 +1,7 @@
 use crate::{def_codegen, ir::types::Type};
 
 def_codegen!(Type, |t| {
-    Ok(CodeWriter::from(match t {
+    Ok(CodeBuffer::from(match t {
         Type::Char => "char".to_string(),
 
         // this is bad: `number` in js is 64 bits, `int` in C is 32. realistically this should be a long

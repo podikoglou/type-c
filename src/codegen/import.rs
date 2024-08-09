@@ -5,11 +5,11 @@ use crate::{def_codegen, ir::Import};
 // 2. The imported items ([[Import::items]]) are not used; we only
 //    use the [[Import::module]] field
 def_codegen!(Import, |import| {
-    let mut writer = CodeWriter::default();
+    let mut buffer = CodeBuffer::default();
 
-    writer.write("#include <");
-    writer.write(import.module.as_str());
-    writer.write(">");
+    buffer.write("#include <");
+    buffer.write(import.module.as_str());
+    buffer.write(">");
 
-    Ok(writer)
+    Ok(buffer)
 });

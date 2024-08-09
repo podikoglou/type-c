@@ -1,9 +1,10 @@
+pub mod buffer;
 pub mod codegen;
 pub mod ir;
 pub mod parsing;
-pub mod writer;
 
 use anyhow::Result;
+use buffer::CodeBuffer;
 use codegen::ToC;
 use parsing::visitor::Visitor;
 use std::{env, path::Path};
@@ -14,7 +15,6 @@ use swc_common::{
 };
 use swc_ecma_parser::{lexer::Lexer, Capturing, Parser, StringInput, Syntax};
 use swc_ecma_visit::VisitAll;
-use writer::CodeWriter;
 
 fn main() -> Result<()> {
     // try to read cli args
@@ -52,10 +52,10 @@ fn main() -> Result<()> {
     // * the visitor: takes care of crawling the AST and
     //   generating the IR representation of the program on the fly
     //
-    // * the writer: the buffer where the C code is written into
+    // * the buffer: the buffer where the C code is written into
     //   by the `ToC` implementations of the IR objects.
     let mut visitor = Visitor::default();
-    let mut writer = CodeWriter::default();
+    let mut buffer = CodeBuffer::default();
 
     // Step 1. Visit / walk the entire AST using SWC
     visitor.visit_module(&module);
@@ -68,21 +68,21 @@ fn main() -> Result<()> {
     program.imports.iter().for_each(|import| {
         let w = (*import).to_c().unwrap();
 
-        writer.concat(&w);
+        buffer.concat(&w);
     });
 
-    writer.write_line("");
+    buffer.write_line("");
 
     // Step 3. Convert the methods to C methods
     program.methods.iter().for_each(|method| {
         let w = (*method).to_c().unwrap();
 
-        writer.concat(&w);
-        writer.write_line("");
+        buffer.concat(&w);
+        buffer.write_line("");
     });
 
-    // // output out C code
-    println!("{}", Into::<String>::into(writer));
+    // output out C code
+    println!("{}", Into::<String>::into(buffer));
 
     Ok(())
 }

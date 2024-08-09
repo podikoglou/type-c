@@ -1,39 +1,40 @@
+use super::ToC;
 use crate::{def_codegen, ir::method::Method};
 use anyhow::Result;
 
 def_codegen!(Method, |method| {
-    let mut writer = CodeWriter::default();
+    let mut buffer = CodeBuffer::default();
 
-    let return_type = &method.return_type.to_c()?;
+    let return_type = method.return_type.to_c()?;
 
     let params: Vec<String> = method
         .parameters
         .iter()
         .map(ToC::to_c)
         .map(Result::unwrap)
-        .map(CodeWriter::into)
+        .map(CodeBuffer::into)
         .collect();
 
     // return type
-    writer.concat(return_type);
-    writer.write(" ");
+    buffer.write(return_type);
+    buffer.write(" ");
 
     // method name
-    writer.write(method.name.as_str());
+    buffer.write(method.name.as_str());
 
     // parameters list
-    writer.write("(");
-    writer.write(params.join(", ").as_str());
-    writer.write(")");
+    buffer.write("(");
+    buffer.write(params.join(", ").as_str());
+    buffer.write(")");
 
     // body
-    writer.write_line("{");
+    buffer.write_line("{");
 
     for statement in &method.body {
-        writer.concat(&statement.to_c()?);
+        buffer.concat(&statement.to_c()?);
     }
 
-    writer.write_line("}");
+    buffer.write_line("}");
 
-    Ok(writer)
+    Ok(buffer)
 });

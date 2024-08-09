@@ -5,25 +5,25 @@ use crate::{
 use anyhow::bail;
 
 def_codegen!(Statement, |statement| {
-    let mut writer = CodeWriter::default();
+    let mut buffer = CodeBuffer::default();
 
     match statement {
         // write variable declaration (not assignment)
         Statement::VariableDeclaration(declaration) => {
             let type_name: String = declaration.var_type.to_c()?.into();
 
-            writer.write(type_name.as_str());
-            writer.write(" ");
-            writer.write(declaration.name.as_str());
+            buffer.write(type_name.as_str());
+            buffer.write(" ");
+            buffer.write(declaration.name.as_str());
 
             if let Some(initializer) = &declaration.initializer {
                 let initializer: String = initializer.to_c()?.into();
 
-                writer.write(" = ");
-                writer.write(initializer.as_str());
+                buffer.write(" = ");
+                buffer.write(initializer.as_str());
             }
 
-            writer.write(";");
+            buffer.write(";");
         }
 
         // value assignment
@@ -31,29 +31,29 @@ def_codegen!(Statement, |statement| {
             let target: String = assignment.target.to_c()?.into();
             let value: String = assignment.value.to_c()?.into();
 
-            writer.write(target.as_str());
-            writer.write(" = ");
-            writer.write(value.as_str());
-            writer.write(";");
+            buffer.write(target.as_str());
+            buffer.write(" = ");
+            buffer.write(value.as_str());
+            buffer.write(";");
         }
 
         // return statements
         Statement::ReturnStatement(expression) => {
             let expression: String = expression.to_c()?.into();
 
-            writer.write("return ");
-            writer.write(expression.as_str());
-            writer.write(";");
+            buffer.write("return ");
+            buffer.write(expression.as_str());
+            buffer.write(";");
         }
 
         // expression statements (just method calls -- anything else errors)
         Statement::ExpressionStatement(statement) => match statement {
             Expression::MethodCall(call) => {
-                writer.write(call.name.as_str());
-                writer.write("(");
+                buffer.write(call.name.as_str());
+                buffer.write("(");
 
                 // arguments
-                writer.write(
+                buffer.write(
                     call.arguments
                         .iter()
                         .map(|arg| arg.to_c().unwrap().into())
@@ -62,14 +62,14 @@ def_codegen!(Statement, |statement| {
                         .as_str(),
                 );
 
-                writer.write(")");
+                buffer.write(")");
 
-                writer.write(";");
+                buffer.write(";");
             }
 
             other => bail!("expression not supported: {:?}", other),
         },
     }
 
-    Ok(writer)
+    Ok(buffer)
 });
