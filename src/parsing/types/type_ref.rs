@@ -1,4 +1,4 @@
-use crate::{def_parser, ir::types::Type};
+use crate::{def_parser, ir::types::Type, parsing::ToIR};
 use anyhow::{bail, Result};
 use std::rc::Rc;
 use swc_ecma_ast::TsTypeRef;

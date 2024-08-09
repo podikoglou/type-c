@@ -12,9 +12,7 @@ pub trait ToIR<T> {
 #[macro_export]
 macro_rules! def_parser {
     ($ast_type:ty, $ir_type:ty, |$param:ident| $body:expr) => {
-        use crate::parsing::ToIR;
-
-        impl ToIR<$ir_type> for $ast_type {
+        impl crate::parsing::ToIR<$ir_type> for $ast_type {
             fn to_ir(&self) -> anyhow::Result<$ir_type> {
                 (|$param: &$ast_type| $body)(self)
             }
