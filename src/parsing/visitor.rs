@@ -84,10 +84,16 @@ impl VisitAll for Visitor {
     fn visit_function(&mut self, node: &swc_ecma_ast::Function) {
         // get name of the function
         // let name = node.ident.sym.to_string();
-        let return_type = node.return_type.clone().unwrap().type_ann;
-        let parsed = return_type.to_ir().unwrap();
 
-        self.current_function_return_type = Some(parsed);
+        let return_type: Type = {
+            match node.return_type.clone() {
+                Some(type_ann) => type_ann.type_ann.to_ir().unwrap(),
+
+                None => Type::Void,
+            }
+        };
+
+        self.current_function_return_type = Some(return_type);
 
         <swc_ecma_ast::Function as swc_ecma_visit::VisitAllWith<Self>>::visit_children_with(
             node, self,
