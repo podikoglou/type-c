@@ -1,5 +1,4 @@
 use crate::{def_codegen, ir::expression::Expression};
-use anyhow::bail;
 
 def_codegen!(Expression, |expr| {
     let mut buffer = CodeBuffer::default();
