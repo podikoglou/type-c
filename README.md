@@ -62,3 +62,8 @@ is compiled into:
 int a = 4;
 int* b = &a;
 ```
+
+### Is there a standard library?
+Sort of. There are some types and functions which are accessible without needing to manually import them. In the future,
+we may create an npm package, similar to [`@bun/types`](https://github.com/oven-sh/bun/tree/main/packages/bun-types)
+which will include all the type and function definitions such as `Pointer` and `ptr()`.
