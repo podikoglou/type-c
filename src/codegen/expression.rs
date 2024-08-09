@@ -23,8 +23,6 @@ def_codegen!(Expression, |expr| {
             );
 
             buffer.write(")");
-
-            buffer.write(";");
         }
         other => bail!("non-supported expression kind: {:?}", other),
     }
