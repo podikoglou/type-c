@@ -1,20 +1,17 @@
-use super::AstToIR;
-use crate::ir::types::Type;
+use crate::{def_parser, ir::types::Type};
 use anyhow::{bail, Result};
 use std::rc::Rc;
 use swc_ecma_ast::TsTypeRef;
 
-impl AstToIR<Type> for TsTypeRef {
-    fn to_ir(&self) -> Result<Type> {
-        let type_name = &self.type_name.as_ident().unwrap().sym.to_string();
+def_parser!(TsTypeRef, Type, |t: &TsTypeRef| {
+    let type_name = &t.type_name.as_ident().unwrap().sym.to_string();
 
-        match type_name.as_str() {
-            "Pointer" => parse_pointer(self),
+    match type_name.as_str() {
+        "Pointer" => parse_pointer(t),
 
-            other => bail!("non-supported type: {:?}", other),
-        }
+        other => bail!("non-supported type: {:?}", other),
     }
-}
+});
 
 fn parse_pointer(input: &TsTypeRef) -> Result<Type> {
     let type_params = input.type_params.clone();

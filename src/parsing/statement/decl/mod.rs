@@ -1,15 +1,13 @@
 pub mod var;
 
-use crate::{ir::statement::Statement, parsing::AstToIR};
-use anyhow::{bail, Result};
+use crate::{def_parser, ir::statement::Statement};
+use anyhow::bail;
 use swc_ecma_ast::Decl;
 
-impl AstToIR<Statement> for Decl {
-    fn to_ir(&self) -> Result<Statement> {
-        match self {
-            Decl::Var(decl) => decl.to_ir(),
+def_parser!(Decl, Statement, |decl: &Decl| {
+    match decl {
+        Decl::Var(decl) => decl.to_ir(),
 
-            other => bail!("non-supported declaration kind: {:?}", other),
-        }
+        other => bail!("non-supported declaration kind: {:?}", other),
     }
-}
+});

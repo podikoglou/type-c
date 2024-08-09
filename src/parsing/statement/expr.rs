@@ -1,11 +1,8 @@
-use crate::{ir::statement::Statement, parsing::AstToIR};
-use anyhow::Result;
+use crate::{def_parser, ir::statement::Statement};
 use swc_ecma_ast::ExprStmt;
 
-impl AstToIR<Statement> for ExprStmt {
-    fn to_ir(&self) -> Result<Statement> {
-        let parsed = self.expr.to_ir()?;
+def_parser!(ExprStmt, Statement, |statement: &ExprStmt| {
+    let parsed = statement.expr.to_ir()?;
 
-        Ok(Statement::ExpressionStatement(parsed))
-    }
-}
+    Ok(Statement::ExpressionStatement(parsed))
+});

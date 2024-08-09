@@ -1,15 +1,11 @@
-use super::AstToIR;
-use crate::ir::types::Type;
-use anyhow::Result;
+use crate::{def_parser, ir::types::Type};
 use std::rc::Rc;
 use swc_ecma_ast::TsArrayType;
 
-impl AstToIR<Type> for TsArrayType {
-    fn to_ir(&self) -> Result<Type> {
-        // yet another TsType, so we can just recursively parse this
-        let inner = self.elem_type.clone();
-        let parsed_type = inner.to_ir()?;
+def_parser!(TsArrayType, Type, |t: &TsArrayType| {
+    // yet another TsType, so we can just recursively parse this
+    let inner = t.elem_type.clone();
+    let parsed_type = inner.to_ir()?;
 
-        Ok(Type::Pointer(Rc::new(parsed_type)))
-    }
-}
+    Ok(Type::Pointer(Rc::new(parsed_type)))
+});

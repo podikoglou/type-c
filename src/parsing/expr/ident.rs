@@ -1,9 +1,6 @@
-use crate::{ir::expression::Expression, parsing::AstToIR};
-use anyhow::Result;
+use crate::{def_parser, ir::expression::Expression};
 use swc_ecma_ast::Ident;
 
-impl AstToIR<Expression> for Ident {
-    fn to_ir(&self) -> Result<Expression> {
-        Ok(Expression::Variable(self.sym.to_string()))
-    }
-}
+def_parser!(Ident, Expression, |ident: &Ident| {
+    Ok(Expression::Variable(ident.sym.to_string()))
+});
