@@ -35,8 +35,6 @@ def_codegen!(Expression, |expr| {
             buffer.write(access.index.to_c()?);
             buffer.write("]");
         }
-
-        other => bail!("non-supported expression kind: {:?}", other),
     }
 
     Ok(buffer)
