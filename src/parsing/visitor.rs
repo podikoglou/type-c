@@ -1,4 +1,4 @@
-use super::{statement_parser::parse_statement, type_parser::parse_type};
+use super::AstToIR;
 use crate::ir::{
     method::{Method, MethodParameter},
     statement::Statement,
@@ -85,7 +85,7 @@ impl VisitAll for Visitor {
         // get name of the function
         // let name = node.ident.sym.to_string();
         let return_type = node.return_type.clone().unwrap().type_ann;
-        let parsed = parse_type(&return_type).unwrap();
+        let parsed = return_type.to_ir().unwrap();
 
         self.current_function_return_type = Some(parsed);
 
@@ -103,7 +103,7 @@ impl VisitAll for Visitor {
         // get type of the parameter
         let ts_type = ident.type_ann.clone().unwrap().type_ann;
 
-        let parsed_type: Type = parse_type(&ts_type).unwrap();
+        let parsed_type: Type = ts_type.to_ir().unwrap();
 
         let parameter = MethodParameter {
             name: name.clone(),
@@ -119,7 +119,7 @@ impl VisitAll for Visitor {
     }
 
     fn visit_stmt(&mut self, node: &swc_ecma_ast::Stmt) {
-        let statement = parse_statement(node).unwrap();
+        let statement = node.to_ir().unwrap();
 
         match &mut self.current_function_body {
             Some(body) => body.push(statement),

@@ -1,10 +1,9 @@
+use super::ToC;
 use crate::{
     ir::{expression::Expression, statement::Statement},
     writer::CodeWriter,
 };
 use anyhow::{bail, Result};
-
-use super::ToC;
 
 impl ToC for Statement {
     fn to_c(&self) -> Result<CodeWriter> {
