@@ -7,5 +7,5 @@ def_parser!(TsArrayType, Type, |t| {
     let inner = t.elem_type.clone();
     let parsed_type = inner.to_ir()?;
 
-    Ok(Type::Pointer(Rc::new(parsed_type)))
+    Ok(Type::Array(Rc::new(parsed_type)))
 });

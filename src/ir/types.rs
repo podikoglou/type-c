@@ -8,4 +8,5 @@ pub enum Type {
     Number,
     Boolean,
     Pointer(Rc<Type>),
+    Array(Rc<Type>),
 }

@@ -17,5 +17,10 @@ def_codegen!(Type, |t| {
 
             format!("{}*", inner)
         }
+
+        // Fun fact: The C language is INCONSISTENT
+        //
+        // We have to put the `[]` *after* the variable name.
+        Type::Array(inner) => inner.to_c().unwrap().into(),
     }))
 });

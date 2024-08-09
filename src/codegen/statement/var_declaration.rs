@@ -1,4 +1,7 @@
-use crate::{def_codegen, ir::statement::VariableDeclaration};
+use crate::{
+    def_codegen,
+    ir::{statement::VariableDeclaration, types::Type},
+};
 
 def_codegen!(VariableDeclaration, |declaration| {
     let mut buffer = CodeBuffer::default();
@@ -7,6 +10,10 @@ def_codegen!(VariableDeclaration, |declaration| {
     buffer.write(type_name.as_str());
     buffer.write(" ");
     buffer.write(declaration.name.as_str());
+
+    if matches!(&declaration.var_type, Type::Array(_)) {
+        buffer.write("[]");
+    }
 
     if let Some(initializer) = &declaration.initializer {
         let initializer: String = initializer.to_c()?.into();
