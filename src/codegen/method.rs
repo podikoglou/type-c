@@ -5,6 +5,8 @@ use anyhow::Result;
 def_codegen!(Method, |method| {
     let mut buffer = CodeBuffer::default();
 
+    let name = &method.name;
+
     let return_type = method.return_type.to_c()?;
 
     let params: Vec<String> = method
@@ -15,17 +17,13 @@ def_codegen!(Method, |method| {
         .map(CodeBuffer::into)
         .collect();
 
-    // return type
-    buffer.write(return_type);
-    buffer.write(" ");
-
-    // method name
-    buffer.write(method.name.as_str());
-
-    // parameters list
-    buffer.write("(");
-    buffer.write(params.join(", ").as_str());
-    buffer.write(")");
+    // type signature
+    buffer.write(format!(
+        "{} {}({})",
+        return_type.to_string(),
+        name,
+        params.join(", ")
+    ));
 
     // body
     buffer.write_line("{");
