@@ -5,6 +5,7 @@ pub mod call;
 pub mod ident;
 pub mod literal;
 pub mod member;
+pub mod paren;
 pub mod unary;
 
 use crate::{def_parser, ir::expression::Expression};
@@ -21,6 +22,7 @@ def_parser!(Expr, Expression, |expr| {
         Expr::Assign(expr) => expr.to_ir(),
         Expr::Bin(expr) => expr.to_ir(),
         Expr::Unary(expr) => expr.to_ir(),
+        Expr::Paren(expr) => expr.to_ir(),
 
         other => bail!("non-supported expression kind: {:?}", other),
     }
