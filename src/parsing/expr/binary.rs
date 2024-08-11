@@ -50,6 +50,18 @@ def_parser!(BinExpr, Expression, |expr| {
             Rc::new(expr.right.clone().to_ir()?),
         ))),
 
+        // TODO: Make this actually have the same effect as in JS/TS
+        BinaryOp::EqEqEq => Ok(Expression::BinaryOperation(BinaryOperation::Eq(
+            Rc::new(expr.left.clone().to_ir()?),
+            Rc::new(expr.right.clone().to_ir()?),
+        ))),
+
+        // TODO: Make this actually have the same effect as in JS/TS
+        BinaryOp::NotEqEq => Ok(Expression::BinaryOperation(BinaryOperation::NotEq(
+            Rc::new(expr.left.clone().to_ir()?),
+            Rc::new(expr.right.clone().to_ir()?),
+        ))),
+
         other => bail!("operation not supported: {:?}", other),
     }
 });
