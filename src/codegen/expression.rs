@@ -1,6 +1,6 @@
 use crate::{
     def_codegen,
-    ir::expression::{binary::BinaryOperation, Expression},
+    ir::expression::{binary::BinaryOperation, unary::UnaryOperation, Expression},
 };
 
 def_codegen!(Expression, |expr| {
@@ -54,6 +54,21 @@ def_codegen!(Expression, |expr| {
                 buffer.write(a);
                 buffer.write(" || ");
                 buffer.write(b);
+            }
+        },
+
+        Expression::UnaryOperation(operation) => match operation {
+            UnaryOperation::Minus(val) => {
+                buffer.write("-");
+                buffer.write(val.to_c()?);
+            }
+            UnaryOperation::Plus(val) => {
+                buffer.write("+");
+                buffer.write(val.to_c()?);
+            }
+            UnaryOperation::Bang(val) => {
+                buffer.write("!");
+                buffer.write(val.to_c()?);
             }
         },
     }
