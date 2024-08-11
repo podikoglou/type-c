@@ -1,6 +1,7 @@
 pub mod block;
 pub mod decl;
 pub mod expr;
+pub mod if_s;
 pub mod return_s;
 
 use crate::{def_parser, ir::statement::Statement};
@@ -13,6 +14,7 @@ def_parser!(Stmt, Statement, |statement| {
         Stmt::Return(statement) => statement.to_ir(),
         Stmt::Decl(statement) => statement.to_ir(),
         Stmt::Block(statement) => statement.to_ir(),
+        Stmt::If(statement) => statement.to_ir(),
 
         other => bail!("non-supported statement kind: {:?}", other),
     }
