@@ -55,6 +55,54 @@ def_codegen!(Expression, |expr| {
                 buffer.write(" || ");
                 buffer.write(b);
             }
+            BinaryOperation::Eq(a, b) => {
+                let a = a.to_c()?;
+                let b = b.to_c()?;
+
+                buffer.write(a);
+                buffer.write(" == ");
+                buffer.write(b);
+            }
+            BinaryOperation::NotEq(a, b) => {
+                let a = a.to_c()?;
+                let b = b.to_c()?;
+
+                buffer.write(a);
+                buffer.write(" != ");
+                buffer.write(b);
+            }
+            BinaryOperation::Gt(a, b) => {
+                let a = a.to_c()?;
+                let b = b.to_c()?;
+
+                buffer.write(a);
+                buffer.write(" > ");
+                buffer.write(b);
+            }
+            BinaryOperation::Lt(a, b) => {
+                let a = a.to_c()?;
+                let b = b.to_c()?;
+
+                buffer.write(a);
+                buffer.write(" < ");
+                buffer.write(b);
+            }
+            BinaryOperation::GtEq(a, b) => {
+                let a = a.to_c()?;
+                let b = b.to_c()?;
+
+                buffer.write(a);
+                buffer.write(" >= ");
+                buffer.write(b);
+            }
+            BinaryOperation::LtEq(a, b) => {
+                let a = a.to_c()?;
+                let b = b.to_c()?;
+
+                buffer.write(a);
+                buffer.write(" <= ");
+                buffer.write(b);
+            }
         },
 
         Expression::UnaryOperation(operation) => match operation {

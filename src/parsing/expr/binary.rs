@@ -20,6 +20,36 @@ def_parser!(BinExpr, Expression, |expr| {
             Rc::new(expr.right.clone().to_ir()?),
         ))),
 
-        _ => bail!("operation not supported"),
+        BinaryOp::EqEq => Ok(Expression::BinaryOperation(BinaryOperation::Eq(
+            Rc::new(expr.left.clone().to_ir()?),
+            Rc::new(expr.right.clone().to_ir()?),
+        ))),
+
+        BinaryOp::NotEq => Ok(Expression::BinaryOperation(BinaryOperation::NotEq(
+            Rc::new(expr.left.clone().to_ir()?),
+            Rc::new(expr.right.clone().to_ir()?),
+        ))),
+
+        BinaryOp::Gt => Ok(Expression::BinaryOperation(BinaryOperation::Gt(
+            Rc::new(expr.left.clone().to_ir()?),
+            Rc::new(expr.right.clone().to_ir()?),
+        ))),
+
+        BinaryOp::Lt => Ok(Expression::BinaryOperation(BinaryOperation::Lt(
+            Rc::new(expr.left.clone().to_ir()?),
+            Rc::new(expr.right.clone().to_ir()?),
+        ))),
+
+        BinaryOp::GtEq => Ok(Expression::BinaryOperation(BinaryOperation::GtEq(
+            Rc::new(expr.left.clone().to_ir()?),
+            Rc::new(expr.right.clone().to_ir()?),
+        ))),
+
+        BinaryOp::LtEq => Ok(Expression::BinaryOperation(BinaryOperation::LtEq(
+            Rc::new(expr.left.clone().to_ir()?),
+            Rc::new(expr.right.clone().to_ir()?),
+        ))),
+
+        other => bail!("operation not supported: {:?}", other),
     }
 });
