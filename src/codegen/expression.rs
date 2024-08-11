@@ -22,6 +22,11 @@ def_codegen!(Expression, |expr| {
             );
             buffer.write(")");
         }
+        Expression::Paren(expr) => {
+            buffer.write("(");
+            buffer.write(expr.0.to_c()?);
+            buffer.write(")");
+        }
         Self::MemberAccess(access) => {
             buffer.write(access.object.to_c()?);
             buffer.write("[");
