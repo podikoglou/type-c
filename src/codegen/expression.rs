@@ -1,4 +1,7 @@
-use crate::{def_codegen, ir::expression::Expression};
+use crate::{
+    def_codegen,
+    ir::expression::{binary::BinaryOperation, Expression},
+};
 
 def_codegen!(Expression, |expr| {
     let mut buffer = CodeBuffer::default();
@@ -34,6 +37,25 @@ def_codegen!(Expression, |expr| {
             buffer.write(" = ");
             buffer.write(value.as_str());
         }
+
+        Expression::BinaryOperation(operation) => match operation {
+            BinaryOperation::And(a, b) => {
+                let a = a.to_c()?;
+                let b = b.to_c()?;
+
+                buffer.write(a);
+                buffer.write(" && ");
+                buffer.write(b);
+            }
+            BinaryOperation::Or(a, b) => {
+                let a = a.to_c()?;
+                let b = b.to_c()?;
+
+                buffer.write(a);
+                buffer.write(" || ");
+                buffer.write(b);
+            }
+        },
     }
 
     Ok(buffer)

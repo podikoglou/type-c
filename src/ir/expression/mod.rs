@@ -1,9 +1,11 @@
 pub mod assignment;
+pub mod binary;
 pub mod literal;
 pub mod member_access;
 pub mod method_call;
 
 use assignment::Assignment;
+use binary::BinaryOperation;
 use literal::Literal;
 use member_access::MemberAccess;
 use method_call::MethodCall;
@@ -18,7 +20,6 @@ pub enum Expression {
     // 1) Keep in mind that structs are not supported at this moment
     // 2) This is translated to as foo[bar] in C -- **not** foo.bar
     MemberAccess(MemberAccess),
-    // BinaryOperation(Box<BinaryOperation>),
-    // UnaryOperation(Box<UnaryOperation>),
+    BinaryOperation(BinaryOperation),
     Assignment(Assignment),
 }
