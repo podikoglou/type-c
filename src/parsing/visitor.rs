@@ -79,6 +79,7 @@ impl VisitAll for Visitor {
         self.current_function_name = None;
         self.current_function_params = None;
         self.current_function_return_type = None;
+        self.current_function_body = None;
     }
 
     fn visit_function(&mut self, node: &swc_ecma_ast::Function) {
