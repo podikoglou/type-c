@@ -133,6 +133,6 @@ impl VisitAll for Visitor {
             None => self.current_function_body = Some(vec![statement]),
         }
 
-        <swc_ecma_ast::Stmt as swc_ecma_visit::VisitAllWith<Self>>::visit_children_with(node, self)
+        // <swc_ecma_ast::Stmt as swc_ecma_visit::VisitAllWith<Self>>::visit_children_with(node, self)
     }
 }
