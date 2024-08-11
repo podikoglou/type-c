@@ -8,5 +8,5 @@ pub struct IfStatement {
     pub test: Expression,
 
     pub cons: Rc<Statement>,
-    pub alt: Rc<Option<Statement>>,
+    pub alt: Option<Rc<Statement>>,
 }

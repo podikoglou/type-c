@@ -9,5 +9,13 @@ def_codegen!(IfStatement, |statement| {
 
     buffer.concat(&statement.cons.to_c()?);
 
+    match &statement.alt {
+        Some(alt) => {
+            buffer.write("else");
+            buffer.concat(&alt.to_c()?);
+        }
+        None => {}
+    }
+
     Ok(buffer)
 });

@@ -12,7 +12,7 @@ def_parser!(IfStmt, Statement, |statement| {
 
     let alt = {
         match &statement.alt {
-            Some(inner) => Some((*inner).to_ir()?),
+            Some(inner) => Some(Rc::new((*inner).to_ir()?)),
             None => None,
         }
     };
@@ -20,6 +20,6 @@ def_parser!(IfStmt, Statement, |statement| {
     Ok(Statement::If(IfStatement {
         test,
         cons: Rc::new(cons),
-        alt: Rc::new(alt),
+        alt: alt,
     }))
 });
