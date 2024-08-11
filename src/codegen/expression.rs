@@ -6,12 +6,9 @@ def_codegen!(Expression, |expr| {
     match &expr {
         Expression::Literal(literal) => return literal.to_c(),
         Expression::Variable(variable) => buffer.write(variable),
-
         Expression::MethodCall(expr) => {
             buffer.write(expr.name.as_str());
             buffer.write("(");
-
-            // arguments
             buffer.write(
                 expr.arguments
                     .iter()
@@ -20,19 +17,22 @@ def_codegen!(Expression, |expr| {
                     .join(", ")
                     .as_str(),
             );
-
             buffer.write(")");
         }
-
         Self::MemberAccess(access) => {
-            // keep in mind that this is not the kind of member access where
-            // you can access fields of a struct or object, this is
-            // just used for indexing arrays
-
             buffer.write(access.object.to_c()?);
             buffer.write("[");
             buffer.write(access.index.to_c()?);
             buffer.write("]");
+        }
+
+        Expression::Assignment(assignment) => {
+            let target: String = assignment.left.to_c()?.into();
+            let value: String = assignment.right.to_c()?.into();
+
+            buffer.write(target.as_str());
+            buffer.write(" = ");
+            buffer.write(value.as_str());
         }
     }
 

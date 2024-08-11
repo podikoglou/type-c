@@ -1,4 +1,5 @@
 pub mod array;
+pub mod assign;
 pub mod call;
 pub mod ident;
 pub mod literal;
@@ -15,6 +16,7 @@ def_parser!(Expr, Expression, |expr| {
         Expr::Member(expr) => expr.to_ir(),
         Expr::Ident(expr) => expr.to_ir(),
         Expr::Array(expr) => expr.to_ir(),
+        Expr::Assign(expr) => expr.to_ir(),
 
         other => bail!("non-supported expression kind: {:?}", other),
     }

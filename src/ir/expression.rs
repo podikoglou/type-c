@@ -12,6 +12,7 @@ pub enum Expression {
     MemberAccess(MemberAccess),
     // BinaryOperation(Box<BinaryOperation>),
     // UnaryOperation(Box<UnaryOperation>),
+    Assignment(Assignment),
 }
 
 #[derive(Debug, Clone)]
@@ -28,6 +29,12 @@ pub struct MemberAccess {
     // it can also be something like foo['bar'] in a JSON object
     // (which btw are not supported (yet))
     pub index: Rc<Expression>,
+}
+
+#[derive(Debug, Clone)]
+pub struct Assignment {
+    pub left: Rc<Expression>,
+    pub right: Rc<Expression>,
 }
 
 #[derive(Debug, Clone)]
