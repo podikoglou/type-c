@@ -126,7 +126,7 @@ impl VisitAll for Visitor {
     }
 
     fn visit_stmt(&mut self, node: &swc_ecma_ast::Stmt) {
-        let statement = node.to_ir().unwrap();
+        let statement = node.to_ir().expect("couldn't parse statement");
 
         match &mut self.current_function_body {
             Some(body) => body.push(statement),
