@@ -1,3 +1,4 @@
+pub mod block;
 pub mod expr;
 pub mod return_s;
 pub mod var_declaration;
@@ -10,5 +11,6 @@ def_codegen!(Statement, |statement| {
         // Statement::Assignment(inner) => inner.to_c(),
         Statement::Return(inner) => inner.to_c(),
         Statement::Expression(inner) => inner.to_c(),
+        Statement::Block(inner) => inner.to_c(),
     }
 });

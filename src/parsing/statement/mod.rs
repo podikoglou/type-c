@@ -1,3 +1,4 @@
+pub mod block;
 pub mod decl;
 pub mod expr;
 pub mod return_s;
@@ -11,6 +12,7 @@ def_parser!(Stmt, Statement, |statement| {
         Stmt::Expr(statement) => statement.to_ir(),
         Stmt::Return(statement) => statement.to_ir(),
         Stmt::Decl(statement) => statement.to_ir(),
+        Stmt::Block(statement) => statement.to_ir(),
 
         other => bail!("non-supported statement kind: {:?}", other),
     }

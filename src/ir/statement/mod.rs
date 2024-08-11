@@ -1,7 +1,9 @@
+pub mod block;
 pub mod expr;
 pub mod return_s;
 pub mod var_decl;
 
+use block::BlockStatement;
 use expr::ExpressionStatement;
 use return_s::ReturnStatement;
 use var_decl::VariableDeclaration;
@@ -14,4 +16,5 @@ pub enum Statement {
     // WhileLoop(WhileLoop),
     Return(ReturnStatement),
     Expression(ExpressionStatement),
+    Block(BlockStatement),
 }
