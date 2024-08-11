@@ -1,4 +1,4 @@
-use crate::{def_codegen, ir::statement::ExpressionStatement};
+use crate::{def_codegen, ir::statement::expr::ExpressionStatement};
 
 def_codegen!(ExpressionStatement, |statement| {
     let mut buffer = CodeBuffer::default();

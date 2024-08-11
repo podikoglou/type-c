@@ -1,6 +1,6 @@
 use crate::{
     def_parser,
-    ir::expression::{Expression, MethodCall},
+    ir::expression::{method_call::MethodCall, Expression},
 };
 use anyhow::{bail, Result};
 use swc_ecma_ast::{CallExpr, Expr};

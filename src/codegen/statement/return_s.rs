@@ -1,8 +1,8 @@
 use crate::{
     def_codegen,
     ir::{
-        expression::{Expression, Literal},
-        statement::ReturnStatement,
+        expression::{literal::Literal, Expression},
+        statement::return_s::ReturnStatement,
     },
 };
 

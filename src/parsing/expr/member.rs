@@ -1,6 +1,6 @@
 use crate::{
     def_parser,
-    ir::expression::{Expression, MemberAccess},
+    ir::expression::{member_access::MemberAccess, Expression},
 };
 use anyhow::bail;
 use std::rc::Rc;

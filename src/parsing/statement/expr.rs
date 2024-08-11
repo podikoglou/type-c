@@ -1,6 +1,6 @@
 use crate::{
     def_parser,
-    ir::statement::{ExpressionStatement, Statement},
+    ir::statement::{expr::ExpressionStatement, Statement},
 };
 use swc_ecma_ast::ExprStmt;
 

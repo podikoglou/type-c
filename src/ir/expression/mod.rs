@@ -1,0 +1,24 @@
+pub mod assignment;
+pub mod literal;
+pub mod member_access;
+pub mod method_call;
+
+use assignment::Assignment;
+use literal::Literal;
+use member_access::MemberAccess;
+use method_call::MethodCall;
+
+#[derive(Debug, Clone)]
+pub enum Expression {
+    Literal(Literal),
+    Variable(String),
+    MethodCall(MethodCall),
+
+    // NOTE:
+    // 1) Keep in mind that structs are not supported at this moment
+    // 2) This is translated to as foo[bar] in C -- **not** foo.bar
+    MemberAccess(MemberAccess),
+    // BinaryOperation(Box<BinaryOperation>),
+    // UnaryOperation(Box<UnaryOperation>),
+    Assignment(Assignment),
+}

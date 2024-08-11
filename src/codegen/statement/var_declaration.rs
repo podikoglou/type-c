@@ -1,6 +1,6 @@
 use crate::{
     def_codegen,
-    ir::{statement::VariableDeclaration, types::Type},
+    ir::{statement::var_decl::VariableDeclaration, types::Type},
 };
 
 def_codegen!(VariableDeclaration, |declaration| {

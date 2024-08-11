@@ -1,0 +1,17 @@
+pub mod expr;
+pub mod return_s;
+pub mod var_decl;
+
+use expr::ExpressionStatement;
+use return_s::ReturnStatement;
+use var_decl::VariableDeclaration;
+
+#[derive(Debug, Clone)]
+pub enum Statement {
+    VariableDeclaration(VariableDeclaration),
+
+    // If(IfStatement),
+    // WhileLoop(WhileLoop),
+    Return(ReturnStatement),
+    Expression(ExpressionStatement),
+}

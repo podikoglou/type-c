@@ -1,6 +1,6 @@
 use crate::{
     def_parser,
-    ir::statement::{Statement, VariableDeclaration},
+    ir::statement::{var_decl::VariableDeclaration, Statement},
 };
 use anyhow::bail;
 use swc_ecma_ast::VarDecl;

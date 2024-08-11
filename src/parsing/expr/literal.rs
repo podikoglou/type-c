@@ -1,6 +1,6 @@
 use crate::{
     def_parser,
-    ir::expression::{Expression, Literal},
+    ir::expression::{literal::Literal, Expression},
 };
 use anyhow::bail;
 use swc_ecma_ast::Lit;

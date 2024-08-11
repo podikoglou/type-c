@@ -5,7 +5,7 @@ use swc_ecma_ast::{AssignExpr, AssignTarget, SimpleAssignTarget};
 
 use crate::{
     def_parser,
-    ir::expression::{Assignment, Expression},
+    ir::expression::{assignment::Assignment, Expression},
 };
 
 def_parser!(AssignExpr, Expression, |expr| {

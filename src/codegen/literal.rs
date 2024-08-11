@@ -1,4 +1,4 @@
-use crate::{def_codegen, ir::expression::Literal};
+use crate::{def_codegen, ir::expression::literal::Literal};
 
 use super::ToC;
 

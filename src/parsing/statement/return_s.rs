@@ -1,8 +1,8 @@
 use crate::{
     def_parser,
     ir::{
-        expression::{Expression, Literal},
-        statement::{ReturnStatement, Statement},
+        expression::{literal::Literal, Expression},
+        statement::{return_s::ReturnStatement, Statement},
     },
 };
 use swc_ecma_ast::ReturnStmt;
