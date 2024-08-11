@@ -17,8 +17,7 @@ def_parser!(AssignExpr, Expression, |expr| {
     let left_expr: Expression = match left {
         AssignTarget::Simple(target) => match target {
             SimpleAssignTarget::Ident(ident) => ident.to_ir()?,
-
-            // SimpleAssignTarget::Member(member) => todo!(),
+            SimpleAssignTarget::Member(member) => member.to_ir()?,
             _ => bail!("this simple assign target type is not supported"),
         },
 
