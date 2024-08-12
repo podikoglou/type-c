@@ -1,12 +1,10 @@
-use std::rc::Rc;
-
-use anyhow::bail;
-use swc_ecma_ast::{BinExpr, BinaryOp};
-
 use crate::{
     def_parser,
     ir::expression::{binary::BinaryOperation, Expression},
 };
+use anyhow::bail;
+use std::rc::Rc;
+use swc_ecma_ast::{BinExpr, BinaryOp};
 
 def_parser!(BinExpr, Expression, |expr| {
     match expr.op {
@@ -58,6 +56,26 @@ def_parser!(BinExpr, Expression, |expr| {
 
         // TODO: Make this actually have the same effect as in JS/TS
         BinaryOp::NotEqEq => Ok(Expression::BinaryOperation(BinaryOperation::NotEq(
+            Rc::new(expr.left.clone().to_ir()?),
+            Rc::new(expr.right.clone().to_ir()?),
+        ))),
+
+        BinaryOp::Add => Ok(Expression::BinaryOperation(BinaryOperation::Add(
+            Rc::new(expr.left.clone().to_ir()?),
+            Rc::new(expr.right.clone().to_ir()?),
+        ))),
+
+        BinaryOp::Sub => Ok(Expression::BinaryOperation(BinaryOperation::Subtract(
+            Rc::new(expr.left.clone().to_ir()?),
+            Rc::new(expr.right.clone().to_ir()?),
+        ))),
+
+        BinaryOp::Mul => Ok(Expression::BinaryOperation(BinaryOperation::Multiply(
+            Rc::new(expr.left.clone().to_ir()?),
+            Rc::new(expr.right.clone().to_ir()?),
+        ))),
+
+        BinaryOp::Div => Ok(Expression::BinaryOperation(BinaryOperation::Divide(
             Rc::new(expr.left.clone().to_ir()?),
             Rc::new(expr.right.clone().to_ir()?),
         ))),

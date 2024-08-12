@@ -12,4 +12,8 @@ pub enum BinaryOperation {
     Lt(Rc<Expression>, Rc<Expression>),
     GtEq(Rc<Expression>, Rc<Expression>),
     LtEq(Rc<Expression>, Rc<Expression>),
+    Add(Rc<Expression>, Rc<Expression>),
+    Subtract(Rc<Expression>, Rc<Expression>),
+    Multiply(Rc<Expression>, Rc<Expression>),
+    Divide(Rc<Expression>, Rc<Expression>),
 }
