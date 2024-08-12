@@ -16,4 +16,5 @@ pub enum BinaryOperation {
     Subtract(Rc<Expression>, Rc<Expression>),
     Multiply(Rc<Expression>, Rc<Expression>),
     Divide(Rc<Expression>, Rc<Expression>),
+    Modulus(Rc<Expression>, Rc<Expression>),
 }

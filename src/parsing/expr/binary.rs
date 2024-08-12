@@ -80,6 +80,11 @@ def_parser!(BinExpr, Expression, |expr| {
             Rc::new(expr.right.clone().to_ir()?),
         ))),
 
+        BinaryOp::Mod => Ok(Expression::BinaryOperation(BinaryOperation::Modulus(
+            Rc::new(expr.left.clone().to_ir()?),
+            Rc::new(expr.right.clone().to_ir()?),
+        ))),
+
         other => bail!("operation not supported: {:?}", other),
     }
 });

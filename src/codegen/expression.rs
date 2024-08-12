@@ -140,6 +140,14 @@ def_codegen!(Expression, |expr| {
                 buffer.write(" / ");
                 buffer.write(b);
             }
+            BinaryOperation::Modulus(a, b) => {
+                let a = a.to_c()?;
+                let b = b.to_c()?;
+
+                buffer.write(a);
+                buffer.write(" % ");
+                buffer.write(b);
+            }
         },
 
         Expression::UnaryOperation(operation) => match operation {
