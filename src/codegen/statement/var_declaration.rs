@@ -22,7 +22,5 @@ def_codegen!(VariableDeclaration, |declaration| {
         buffer.write(initializer.as_str());
     }
 
-    buffer.write(";");
-
     Ok(buffer)
 });

@@ -10,7 +10,7 @@ def_parser!(ForStmt, Statement, |statement| {
         VarDeclOrExpr::VarDecl(decl) => (*decl.clone()).to_ir()?,
 
         VarDeclOrExpr::Expr(expr) => {
-            Statement::Expression(ExpressionStatement((*expr.clone()).to_ir()?, false))
+            Statement::Expression(ExpressionStatement((*expr.clone()).to_ir()?))
         }
     };
 
@@ -18,7 +18,6 @@ def_parser!(ForStmt, Statement, |statement| {
 
     let update = Statement::Expression(ExpressionStatement(
         (*statement.update.clone().expect("expected update")).to_ir()?,
-        false,
     ));
 
     let body = (*statement.body.clone()).to_ir()?;

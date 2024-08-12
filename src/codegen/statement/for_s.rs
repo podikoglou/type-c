@@ -6,12 +6,13 @@ def_codegen!(ForStatement, |statement| {
     buffer.write("for(");
 
     buffer.write(statement.init.to_c()?);
-    buffer.write(";");
+    // buffer.write(";");
 
     buffer.write(statement.test.to_c()?);
     buffer.write(";");
 
-    buffer.write(statement.update.to_c()?);
+    // HACK: I hate this. We need to architect the way semicolons are handled better.
+    buffer.write(statement.update.to_c()?.to_string().trim_end_matches(";"));
 
     buffer.write(")");
 

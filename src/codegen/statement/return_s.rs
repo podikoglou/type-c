@@ -25,7 +25,8 @@ def_codegen!(ReturnStatement, |statement| {
 
     let expression: String = statement.0.to_c()?.into();
 
-    buffer.write(format!("return {};", expression));
+    buffer.write("return ");
+    buffer.write(expression);
 
     Ok(buffer)
 });
