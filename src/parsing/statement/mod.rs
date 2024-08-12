@@ -1,6 +1,7 @@
 pub mod block;
 pub mod decl;
 pub mod expr;
+pub mod for_s;
 pub mod if_s;
 pub mod return_s;
 pub mod while_s;
@@ -17,6 +18,9 @@ def_parser!(Stmt, Statement, |statement| {
         Stmt::Block(statement) => statement.to_ir(),
         Stmt::If(statement) => statement.to_ir(),
         Stmt::While(statement) => statement.to_ir(),
+        Stmt::For(statement) => statement.to_ir(),
+        Stmt::ForIn(statement) => statement.to_ir(),
+        Stmt::ForOf(statement) => statement.to_ir(),
 
         other => bail!("non-supported statement kind: {:?}", other),
     }

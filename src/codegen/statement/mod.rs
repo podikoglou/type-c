@@ -1,5 +1,6 @@
 pub mod block;
 pub mod expr;
+pub mod for_s;
 pub mod if_s;
 pub mod return_s;
 pub mod var_declaration;
@@ -16,5 +17,6 @@ def_codegen!(Statement, |statement| {
         Statement::Block(inner) => inner.to_c(),
         Statement::If(inner) => inner.to_c(),
         Statement::While(inner) => inner.to_c(),
+        Statement::For(inner) => inner.to_c(),
     }
 });
