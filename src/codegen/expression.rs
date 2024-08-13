@@ -1,3 +1,5 @@
+use anyhow::bail;
+
 use crate::{
     def_codegen,
     ir::expression::{binary::BinaryOperation, unary::UnaryOperation, Expression},
@@ -9,19 +11,30 @@ def_codegen!(Expression, |expr| {
     match &expr {
         Expression::Literal(literal) => return literal.to_c(),
         Expression::Variable(variable) => buffer.write(variable),
-        Expression::MethodCall(expr) => {
-            buffer.write(expr.name.as_str());
-            buffer.write("(");
-            buffer.write(
-                expr.arguments
-                    .iter()
-                    .map(|arg| arg.to_c().unwrap().into())
-                    .collect::<Vec<String>>()
-                    .join(", ")
-                    .as_str(),
-            );
-            buffer.write(")");
-        }
+        Expression::MethodCall(expr) => match expr.name.as_str() {
+            "ptr" => {
+                if expr.arguments.len() > 1 {
+                    bail!("only one argument expected to ptr");
+                }
+
+                buffer.write("&");
+                buffer.write(expr.arguments.first().unwrap().to_c()?);
+            }
+
+            name => {
+                buffer.write(name);
+                buffer.write("(");
+                buffer.write(
+                    expr.arguments
+                        .iter()
+                        .map(|arg| arg.to_c().unwrap().into())
+                        .collect::<Vec<String>>()
+                        .join(", ")
+                        .as_str(),
+                );
+                buffer.write(")");
+            }
+        },
         Expression::Paren(expr) => {
             buffer.write("(");
             buffer.write(expr.0.to_c()?);
