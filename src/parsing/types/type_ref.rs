@@ -1,6 +1,5 @@
 use crate::{def_parser, ir::types::Type, parsing::ToIR};
 use anyhow::{bail, Result};
-use std::rc::Rc;
 use swc_ecma_ast::TsTypeRef;
 
 def_parser!(TsTypeRef, Type, |t| {
@@ -32,5 +31,5 @@ fn parse_pointer(input: &TsTypeRef) -> Result<Type> {
     let inner = type_params.params.first().unwrap();
     let inner_type = inner.to_ir()?;
 
-    Ok(Type::Pointer(Rc::new(inner_type)))
+    Ok(Type::Pointer(Box::new(inner_type)))
 }

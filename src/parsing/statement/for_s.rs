@@ -2,7 +2,6 @@ use crate::{
     def_parser,
     ir::statement::{expr::ExpressionStatement, for_s::ForStatement, Statement},
 };
-use std::rc::Rc;
 use swc_ecma_ast::{ForInStmt, ForOfStmt, ForStmt, VarDeclOrExpr};
 
 def_parser!(ForStmt, Statement, |statement| {
@@ -23,10 +22,10 @@ def_parser!(ForStmt, Statement, |statement| {
     let body = (*statement.body.clone()).to_ir()?;
 
     Ok(Statement::For(ForStatement {
-        init: Rc::new(init),
+        init: Box::new(init),
         test,
-        update: Rc::new(update),
-        body: Rc::new(body),
+        update: Box::new(update),
+        body: Box::new(body),
     }))
 });
 

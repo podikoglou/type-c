@@ -1,4 +1,3 @@
-use std::rc::Rc;
 
 use super::Statement;
 use crate::ir::expression::Expression;
@@ -7,6 +6,6 @@ use crate::ir::expression::Expression;
 pub struct IfStatement {
     pub test: Expression,
 
-    pub cons: Rc<Statement>,
-    pub alt: Option<Rc<Statement>>,
+    pub cons: Box<Statement>,
+    pub alt: Option<Box<Statement>>,
 }

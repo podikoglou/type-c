@@ -2,7 +2,6 @@ use crate::{
     def_parser,
     ir::statement::{if_s::IfStatement, Statement},
 };
-use std::rc::Rc;
 use swc_ecma_ast::IfStmt;
 
 def_parser!(IfStmt, Statement, |statement| {
@@ -12,14 +11,14 @@ def_parser!(IfStmt, Statement, |statement| {
 
     let alt = {
         match &statement.alt {
-            Some(inner) => Some(Rc::new((*inner).to_ir()?)),
+            Some(inner) => Some(Box::new((*inner).to_ir()?)),
             None => None,
         }
     };
 
     Ok(Statement::If(IfStatement {
         test,
-        cons: Rc::new(cons),
+        cons: Box::new(cons),
         alt: alt,
     }))
 });

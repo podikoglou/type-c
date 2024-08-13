@@ -3,7 +3,6 @@ use crate::{
     ir::expression::{member_access::MemberAccess, Expression},
 };
 use anyhow::bail;
-use std::rc::Rc;
 use swc_ecma_ast::{MemberExpr, MemberProp};
 
 def_parser!(MemberExpr, Expression, |expr| {
@@ -20,8 +19,8 @@ def_parser!(MemberExpr, Expression, |expr| {
             let parsed_expr = prop.expr.to_ir()?;
 
             Ok(Expression::MemberAccess(MemberAccess {
-                object: Rc::new(Expression::Variable(obj)),
-                index: Rc::new(parsed_expr),
+                object: Box::new(Expression::Variable(obj)),
+                index: Box::new(parsed_expr),
             }))
         }
 

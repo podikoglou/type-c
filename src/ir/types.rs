@@ -1,4 +1,3 @@
-use std::rc::Rc;
 
 #[derive(Debug, Default, Clone)]
 pub enum Type {
@@ -7,6 +6,6 @@ pub enum Type {
     Char,
     Number,
     Boolean,
-    Pointer(Rc<Type>),
-    Array(Rc<Type>),
+    Pointer(Box<Type>),
+    Array(Box<Type>),
 }

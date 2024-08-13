@@ -2,7 +2,6 @@ use crate::{
     def_parser,
     ir::statement::{while_s::WhileStatement, Statement},
 };
-use std::rc::Rc;
 use swc_ecma_ast::WhileStmt;
 
 def_parser!(WhileStmt, Statement, |statement| {
@@ -11,6 +10,6 @@ def_parser!(WhileStmt, Statement, |statement| {
 
     Ok(Statement::While(WhileStatement {
         test,
-        body: Rc::new(body),
+        body: Box::new(body),
     }))
 });

@@ -1,4 +1,3 @@
-use std::rc::Rc;
 
 use anyhow::bail;
 use swc_ecma_ast::{AssignExpr, AssignTarget, SimpleAssignTarget};
@@ -27,7 +26,7 @@ def_parser!(AssignExpr, Expression, |expr| {
     let right_expr = right.to_ir()?;
 
     Ok(Expression::Assignment(Assignment {
-        left: Rc::new(left_expr),
-        right: Rc::new(right_expr),
+        left: Box::new(left_expr),
+        right: Box::new(right_expr),
     }))
 });
