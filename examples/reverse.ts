@@ -1,4 +1,6 @@
-import { printf, strlen, strcpy } from "string.h";
+import { strlen, strcpy } from "string.h";
+import { printf } from "stdio.h";
+import { malloc, free } from "stdlib.h";
 
 export function main(argc: number, argv: string[]): number {
   if (argc !== 2) {
@@ -8,9 +10,9 @@ export function main(argc: number, argv: string[]): number {
 
   const str: string = argv[1];
   const len: number = strlen(str);
-  const reversed: Pointer<string> = new Array(len + 1).fill("\0");
+  const reversed: string;
 
-  for (let i = 0; i < len; i++) {
+  for (let i: number = 0; i < len; i++) {
     reversed[i] = str[len - 1 - i];
   }
 
