@@ -8,6 +8,7 @@ def_parser!(TsTypeRef, Type, |t| {
 
     match type_name.as_str() {
         "Pointer" => parse_pointer(t),
+        "char" => Ok(Type::Char),
 
         other => bail!("non-supported type: {:?}", other),
     }
