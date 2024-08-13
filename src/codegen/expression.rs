@@ -21,6 +21,15 @@ def_codegen!(Expression, |expr| {
                 buffer.write(expr.arguments.first().unwrap().to_c()?);
             }
 
+            "deref" => {
+                if expr.arguments.len() > 1 {
+                    bail!("only one argument expected to deref");
+                }
+
+                buffer.write("*");
+                buffer.write(expr.arguments.first().unwrap().to_c()?);
+            }
+
             name => {
                 buffer.write(name);
                 buffer.write("(");
