@@ -48,7 +48,7 @@ under the pointer as the generic.
 
 **Example:**
 ```typescript
-let numberPtr: Pointer<Number>;
+let numberPtr: Pointer<number>;
 ```
 is compiled into:
 ```c
