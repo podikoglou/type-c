@@ -5,46 +5,12 @@ pub mod parsing;
 use anyhow::Result;
 use codegen::buffer::CodeBuffer;
 use codegen::ToC;
-use parsing::visitor::Visitor;
-use std::{env, path::Path};
-use swc_common::{
-    errors::{ColorConfig, Handler},
-    sync::Lrc,
-    SourceMap,
-};
-use swc_ecma_parser::{lexer::Lexer, Capturing, Parser, StringInput, Syntax};
-use swc_ecma_visit::VisitAll;
+use std::env;
 
 fn main() -> Result<()> {
     // try to read cli args
     let args = env::args().collect::<Vec<String>>();
-    let file_path = args.last().unwrap();
-
-    let cm: Lrc<SourceMap> = Default::default();
-    let handler = Handler::with_tty_emitter(ColorConfig::Auto, true, false, Some(cm.clone()));
-
-    // Real usage
-    let fm = cm.load_file(Path::new(file_path))?;
-
-    let lexer = Lexer::new(
-        Syntax::Typescript(Default::default()),
-        Default::default(),
-        StringInput::from(&*fm),
-        None,
-    );
-
-    let capturing = Capturing::new(lexer);
-
-    let mut parser = Parser::new_from(capturing);
-
-    for e in parser.take_errors() {
-        e.into_diagnostic(&handler).emit();
-    }
-
-    let module = parser
-        .parse_typescript_module()
-        .map_err(|e| e.into_diagnostic(&handler).emit())
-        .expect("couldn't parse code");
+    let file_path = args.last().unwrap().to_string();
 
     // initialize the two main components of the transpiler:
     //
@@ -53,15 +19,12 @@ fn main() -> Result<()> {
     //
     // * the buffer: the buffer where the C code is written into
     //   by the `ToC` implementations of the IR objects.
-    let mut visitor = Visitor::default();
     let mut buffer = CodeBuffer::default();
 
-    // Step 1. Visit / walk the entire AST using SWC
-    visitor.visit_module(&module);
-
-    // this our IR AST (which is basically a dumbed down and more universal
-    // version of swc's AST)
-    let program = visitor.program;
+    // Step 1. Parse code into IR AST using the given parser
+    //
+    // (this is hardcoded for now until we add more parsers)
+    let program = parsing::swc::load(file_path)?;
 
     // Step 2. Convert the imports to C includes
     program.imports.iter().for_each(|import| {

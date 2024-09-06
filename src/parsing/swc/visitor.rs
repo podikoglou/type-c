@@ -1,11 +1,14 @@
-use super::ToIR;
-use crate::ir::{
-    method::{Method, MethodParameter},
-    statement::Statement,
-    types::Type,
-    Program,
+use swc_ecma_visit::Visit;
+
+use crate::{
+    ir::{
+        method::{Method, MethodParameter},
+        statement::Statement,
+        types::Type,
+        Program,
+    },
+    parsing::ToIR,
 };
-use swc_ecma_visit::VisitAll;
 
 #[derive(Default)]
 pub struct Visitor {
@@ -37,7 +40,7 @@ impl Visitor {
     }
 }
 
-impl VisitAll for Visitor {
+impl Visit for Visitor {
     fn visit_import_decl(&mut self, node: &swc_ecma_ast::ImportDecl) {
         // get name of the module (i.e. package we're importing from)
         let module = node.src.value.to_string();
@@ -59,7 +62,7 @@ impl VisitAll for Visitor {
             .imports
             .push(crate::ir::Import { module, items });
 
-        <swc_ecma_ast::ImportDecl as swc_ecma_visit::VisitAllWith<Self>>::visit_children_with(
+        <swc_ecma_ast::ImportDecl as swc_ecma_visit::VisitWith<Self>>::visit_children_with(
             node, self,
         )
     }
@@ -67,9 +70,7 @@ impl VisitAll for Visitor {
     fn visit_fn_decl(&mut self, node: &swc_ecma_ast::FnDecl) {
         self.current_function_name = Some(node.ident.sym.to_string());
 
-        <swc_ecma_ast::FnDecl as swc_ecma_visit::VisitAllWith<Self>>::visit_children_with(
-            node, self,
-        );
+        <swc_ecma_ast::FnDecl as swc_ecma_visit::VisitWith<Self>>::visit_children_with(node, self);
 
         // after we're done with visiting the entirety of this function, we can
         // add it to our IR AST
@@ -96,9 +97,7 @@ impl VisitAll for Visitor {
 
         self.current_function_return_type = Some(return_type);
 
-        <swc_ecma_ast::Function as swc_ecma_visit::VisitAllWith<Self>>::visit_children_with(
-            node, self,
-        )
+        <swc_ecma_ast::Function as swc_ecma_visit::VisitWith<Self>>::visit_children_with(node, self)
     }
 
     fn visit_param(&mut self, node: &swc_ecma_ast::Param) {
@@ -122,7 +121,7 @@ impl VisitAll for Visitor {
             None => self.current_function_params = Some(vec![parameter]),
         }
 
-        <swc_ecma_ast::Param as swc_ecma_visit::VisitAllWith<Self>>::visit_children_with(node, self)
+        <swc_ecma_ast::Param as swc_ecma_visit::VisitWith<Self>>::visit_children_with(node, self)
     }
 
     fn visit_stmt(&mut self, node: &swc_ecma_ast::Stmt) {
@@ -133,6 +132,6 @@ impl VisitAll for Visitor {
             None => self.current_function_body = Some(vec![statement]),
         }
 
-        // <swc_ecma_ast::Stmt as swc_ecma_visit::VisitAllWith<Self>>::visit_children_with(node, self)
+        // <swc_ecma_ast::Stmt as swc_ecma_visit::VisitWith<Self>>::visit_children_with(node, self)
     }
 }

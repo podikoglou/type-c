@@ -1,9 +1,6 @@
-pub mod expr;
-pub mod statement;
-pub mod types;
-pub mod visitor;
-
 use anyhow::Result;
+
+pub mod swc;
 
 pub trait ToIR<T> {
     fn to_ir(&self) -> Result<T>;
