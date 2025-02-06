@@ -71,7 +71,8 @@ int* b = &a;
 
 ### Is there a standard library?
 Sort of. There are some types and functions which are accessible without
-needing to manually import them. In the future, we may create an npm package,
+needing to manually import them. It would be nice to have an npm package,
 similar to [`@bun/types`](https://github.com/oven-sh/bun/tree/main/packages/bun-types)
-which will include all the type and function definitions such as `Pointer` and
-`ptr()`.
+which would include all the type and function definitions such as `Pointer` and
+`ptr()`, but it doesn't exist and likely won't be made as this is just a hobby project
+and is not supposed to be used anyway.
