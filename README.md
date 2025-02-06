@@ -40,7 +40,7 @@ type-c examples/hello_world.ts | clang-format
 ```
 
 ### Is there support for editors?
-At least for now, *no!*
+*No!*
 
 ### How are pointers handled?
 **For typing pointers**, you can use the `Pointer<T>` type and pass in the type
